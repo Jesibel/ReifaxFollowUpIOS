@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns   = "http://www.w3.org/ns/widgets"
+ xmlns:gap   = "http://phonegap.com/ns/1.0"
+ id          = "com.reifax.followup"
+ versionCode = "1" 
+ version     = "1.0.0" >
+
+  <!-- versionCode is optional and Android only -->
+
+  <name>Reifax Follow Up</name>
+
+  <description>
+  Opportunity to follow up on the properties. The follow up is a tool that has several tabs that will allow you to maximize your Customer relationship management (CRM) so you can manage and analyze agent or owner interactions and data. Contact Manager: This features enables you to easily manage store and find contact information, such as names, addresses and telephone numbers of your contacts and leads
+  </description> 
+
+  <author href="http://reifax.com" email="jesibelaranguren@gmail.com">
+  Jesibel Aranguren 
+  </author>
+  
+   <feature name="http://api.phonegap.com/1.0/network"/>
+   <feature name="http://api.phonegap.com/1.0/media"/>
+   <feature name="http://api.phonegap.com/1.0/file"/>
+   <feature name="http://api.phonegap.com/1.0/notification"/>
+   
+   <feature name="InAppBrowser">
+    <param name="android-package" value="org.apache.cordova.InAppBrowser" />
+   </feature>
+  
+  <feature name="InAppBrowser">
+    <param name="ios-package" value="CDVInAppBrowser" />
+  </feature>
+ 
+  <content src="index.html" />
+  
+  <preference name="phonegap-version" value="3.7.0" />
+
+  <!-- Preferences -->
+  <preference name="android-minSdkVersion" value="14" /> 
+  <preference name="orientation" value="default" />
+  <preference name="show-splash-screen-spinner" value="false" />
+
+
+  <preference name="SplashScreen" value="splash" />
+  <preference name="SplashScreenDelay" value="10000" /> <!-- ios: if set to false, the spinner won't appear on the splash screen during app loading -->
+  
+  
+ 
+  <!-- Define app icon for each platform. -->
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-120.png"/>
+  
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-36.png"   gap:platform="android"    gap:density="ldpi" />
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-48.png"   gap:platform="android"    gap:density="mdpi" />
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-72.png"   gap:platform="android"    gap:density="hdpi" />
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-96.png"   gap:platform="android"    gap:density="xhdpi" />
+  
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-29.png"   gap:platform="ios"        width="29" height="29" />
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-40.png"   gap:platform="ios"        width="40" height="40" />
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-57.png"   gap:platform="ios"        width="57" height="57" />
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-58.png"   gap:platform="ios"        width="58" height="58" />
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-60.png"   gap:platform="ios"        width="60" height="60" />
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-72.png"   gap:platform="ios"        width="72" height="72" />
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-76.png"   gap:platform="ios"        width="76" height="76" />
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-80.png"   gap:platform="ios"        width="80" height="80" />
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-114.png"  gap:platform="ios"        width="114" height="114" />
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-120.png"  gap:platform="ios"        width="120" height="120" />
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-144.png"  gap:platform="ios"        width="144" height="144" />
+  <icon src="resources/image/reifax_FOLLOW_UP_logo-152.png"  gap:platform="ios"        width="152" height="152" />
+  
+
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-320x480.png"  gap:platform="android" gap:qualifier="port-ldpi" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-320x480.png"  gap:platform="android" gap:qualifier="port-mdpi" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-480x800.png"  gap:platform="android" gap:qualifier="port-hdpi" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-720x1280.png"  gap:platform="android" gap:qualifier="port-xhdpi" />
+  
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-480x320.png"  gap:platform="android" gap:qualifier="land-ldpi" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-480x320.png"  gap:platform="android" gap:qualifier="land-mdpi" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-800x480.png"  gap:platform="android" gap:qualifier="land-hdpi" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-1280x720.png" gap:platform="android" gap:qualifier="land-xhdpi" />
+    
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-320x480.png"  gap:platform="ios"     width="320"  height="480" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-640x960.png"  gap:platform="ios"     width="640"  height="960" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-768x1024.png"  gap:platform="ios"     width="768"  height="1024" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-1024x768.png"  gap:platform="ios"     width="1024" height="768" />
+
+
+  <gap:plugin name="org.apache.cordova.media" />	
+
+  <gap:plugin name="com.boyvanderlaak.cordova.plugin.orientationchanger" version="0.1.1" />
+  
+  <!--gap:plugin name="org.apache.cordova.inappbrowser" version="0.5.2" /-->
+  
+  <gap:plugin name="io.github.pwlin.cordova.plugins.fileopener" version="1.0.1" />
+  
+  <gap:plugin name="org.apache.cordova.dialogs" version="0.2.10" />
+  
+  <gap:plugin name="org.apache.cordova.splashscreen" />
+
+  
+  <access origin="*" />
+  <access origin="http://reifax.com/" subdomains="true" />
+  
+  
+  
+
+</widget>
