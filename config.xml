@@ -43,6 +43,9 @@
   <preference name="SplashScreen" value="splash" />
   <preference name="SplashScreenDelay" value="10000" /> <!-- ios: if set to false, the spinner won't appear on the splash screen during app loading -->
   
+   <preference name="stay-in-webview" value="true" />
+  
+  <preference name="DisallowOverscroll" value="true"/>
   
  
   <!-- Define app icon for each platform. -->
@@ -94,6 +97,13 @@
   <gap:plugin name="org.apache.cordova.dialogs" version="0.2.10" />
   
   <gap:plugin name="org.apache.cordova.splashscreen" />
+  
+  <gap:config-file platform="ios" parent="UISupportedInterfaceOrientations~ipad" overwrite="true">
+    <array>
+      <string>UIInterfaceOrientationLandscapeLeft</string>
+      <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+  </gap:config-file>
 
   
   <access origin="*" />
