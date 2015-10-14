@@ -151,7 +151,7 @@
 </script>	
 	<script type="text/javascript">
 	tinymce.init({
-		selector: "#bodyEmail,#bodySms,#bodyFax",
+		selector: "#bodyEmail,#bodySms,#bodyFax,#textschdetailhist,#textcompdetailhist,#detailsEF",
 		theme_advanced_font_sizes: "10px,12px,13px,14px,16px,18px,20px",
 		font_size_style_values : "10px,12px,13px,14px,16px,18px,20px",
 		
@@ -178,9 +178,17 @@ $(document).ready(function(){
 	//document.getElementById('templaSms').style.display = "none";
 	//document.getElementById('templaFAX').style.display = "none";
 	document.getElementById('between').style.display = "none";
+	document.getElementById('between2').style.display = "none";
+	document.getElementById('betweenMail').style.display = "none";
+	document.getElementById('betweenMail2').style.display = "none";
+	document.getElementById('betweenMailO').style.display = "none";
+	document.getElementById('betweenMailO2').style.display = "none";
 	document.getElementById('betweenExecPTask').style.display = "none";
+	document.getElementById('betweenExecPTask2').style.display = "none";
 	document.getElementById('betweenSchePTask').style.display = "none";
+	document.getElementById('betweenSchePTask2').style.display = "none";
 	document.getElementById('betweenCompTask').style.display = "none";
+	document.getElementById('betweenCompTask2').style.display = "none";
 	document.getElementById('regContact').style.display = "none";
 	document.getElementById("menuDE").style.display = "none";
 	document.getElementById("menuDE2").style.display = "none";
@@ -202,8 +210,10 @@ $(document).ready(function(){
 		//alert($(this).val());
 		if ($(this).val()=='Between'){
 			document.getElementById('between').style.display = "block";
+			document.getElementById('between2').style.display = "block";
 		}else{
 			document.getElementById('between').style.display = "none";
+			document.getElementById('between2').style.display = "none";
 		}
 	});
 		
@@ -211,17 +221,21 @@ $(document).ready(function(){
 		//alert($(this).val());
 		if ($(this).val()=='Between'){
 			document.getElementById('betweenExecPTask').style.display = "block";
+			document.getElementById('betweenExecPTask2').style.display = "block";
 		}else{
 			document.getElementById('betweenExecPTask').style.display = "none";
+			document.getElementById('betweenExecPTask2').style.display = "none";
 		}
 	});
 		
-	$('#cdateCTask').change(function(){
+	$('#compdateCTask').change(function(){
 		//alert($(this).val());
 		if ($(this).val()=='Between'){
 			document.getElementById('betweenCompTask').style.display = "block";
+			document.getElementById('betweenCompTask2').style.display = "block";
 		}else{
 			document.getElementById('betweenCompTask').style.display = "none";
+			document.getElementById('betweenCompTask2').style.display = "none";
 		}
 	});
 		
@@ -229,8 +243,32 @@ $(document).ready(function(){
 		//alert($(this).val());
 		if ($(this).val()=='Between'){
 			document.getElementById('betweenSchePTask').style.display = "block";
+			document.getElementById('betweenSchePTask2').style.display = "block";
 		}else{
 			document.getElementById('betweenSchePTask').style.display = "none";
+			document.getElementById('betweenSchePTask2').style.display = "none";
+		}
+	});
+	
+	$('#maildate').change(function(){
+		//alert($(this).val());
+		if ($(this).val()=='Between'){
+			document.getElementById('betweenMail').style.display = "block";
+			document.getElementById('betweenMail2').style.display = "block";
+		}else{
+			document.getElementById('betweenMail').style.display = "none";
+			document.getElementById('betweenMail2').style.display = "none";
+		}
+	});
+	
+	$('#maildateO').change(function(){
+		//alert($(this).val());
+		if ($(this).val()=='Between'){
+			document.getElementById('betweenMailO').style.display = "block";
+			document.getElementById('betweenMailO2').style.display = "block";
+		}else{
+			document.getElementById('betweenMailO').style.display = "none";
+			document.getElementById('betweenMailO2').style.display = "none";
 		}
 	});
 	
@@ -493,6 +531,34 @@ $(document).ready(function(){
 			    var reader = new FileReader();
 			    reader.onload = function (e) {			            	
 					$('#imagePreview').attr('src', e.target.result);
+				}
+			};
+			reader.readAsDataURL(input.files[0]);
+		}	
+	});
+	
+	$('#imageUploadEI').change(function(){
+		$('#imagePreviewEI').show();
+		readImgUrlAndPreview(this);
+		function readImgUrlAndPreview(input){
+			if (input.files && input.files[0]) {
+			    var reader = new FileReader();
+			    reader.onload = function (e) {			            	
+					$('#imagePreviewEI').attr('src', e.target.result);
+				}
+			};
+			reader.readAsDataURL(input.files[0]);
+		}	
+	});
+	
+	$('#imageUploadEO').change(function(){
+		$('#imagePreviewEO').show();
+		readImgUrlAndPreview(this);
+		function readImgUrlAndPreview(input){
+			if (input.files && input.files[0]) {
+			    var reader = new FileReader();
+			    reader.onload = function (e) {			            	
+					$('#imagePreviewEO').attr('src', e.target.result);
 				}
 			};
 			reader.readAsDataURL(input.files[0]);
@@ -1206,12 +1272,15 @@ $(function(){
 		//alert(url);
 		var id= $(this).attr('idmail');
 		var idseen= $(this).attr('idseen');
+		var parcelid = { 'parcelid' : pid };
 		// Creamos un objeto
 		var object = { 'email' : id };
 		var seen = { 'seen' : idseen };
+		var parcelid = { 'parcelid' : pid };
 		// Lo guardamos en localStorage pasandolo a cadena con JSON
 		localStorage.setItem('email', JSON.stringify(object));
 		localStorage.setItem('seen', JSON.stringify(seen));
+		localStorage.setItem('key', JSON.stringify(parcelid));
 		$('#detalleEmailCabO ul').empty();
 		$('#detalleCorreoO').empty();
 		//$.mobile.changePage( "#detailEmailOutbox");	
@@ -1518,7 +1587,7 @@ $(function(){
 	
 		
 	//MAKE CALL
-	$('#makeCall,#makeCallDP').on('click', function () {
+	$('#makeCall,#makeCallDP,#makeCallEF,#makeCallEI').on('click', function () {
 		//alert('get');
 		//getAgentMakeCall(checkid);
 		//getAgentCall(checkid);
@@ -1534,9 +1603,9 @@ $(function(){
 	//SEND COMPOSE EMAIL FOLLOW
 	$('#sendComposeEmailFollow,#sendComposeEF').on('click', function () {
 		//alert('sendemail');
-		var val = JSON.parse(localStorage.getItem('key5'));
+		var val = JSON.parse(localStorage.getItem('email'));
 		var val2 = JSON.parse(localStorage.getItem('key'));
-		sendEmailFollow(val.mail,val2.parcelid);	
+		sendEmailFollow(val.email,val2.parcelid);	
 	});
 		
 	//CARGAR EDITAR CONTACT
@@ -1619,8 +1688,8 @@ $(function(){
 		
 	//BOTON DELETE EMAIL FOLLOW
 	$("#deleteEmailFollow,#deleteEmailFollow2").on('click', function () {
-		var valor = JSON.parse(localStorage.getItem('key5'));
-		deleteEmailFollow(valor.mail);
+		var valor = JSON.parse(localStorage.getItem('email'));
+		deleteEmailFollow(valor.email);
 	});
 		
 	//BOTON CARGAR EDITAR PENDING TASK
@@ -2195,7 +2264,7 @@ $(function(){
 	});
 	
 	//BOTON SEND CONTRACT
-	$("#sendContractDP").on('click', function () {
+	$("#sendContractDP,#sendContractEF,#sendContractEI,#sendContractEO").on('click', function () {
 		var id = JSON.parse(localStorage.getItem('key'));
 		var detalle=1;
 		$('#btnscheduledoc').hide();
@@ -2215,7 +2284,7 @@ $(function(){
 	});
 	
 	//GET TEMPLATE EMAIL
-	$('#sendEmailDP').on('click',function(){				
+	$('#sendEmailDP,sendEmailEF,sendEmailEI,sendEmailEO').on('click',function(){				
 		//alert("getptask");
 		var id = JSON.parse(localStorage.getItem('key'));
 		var detalle=1;
@@ -2244,7 +2313,7 @@ $(function(){
 	});
 	
 	//OPEN NEW SCHEDULE
-	$('#nschedule,#nscheduleDP').on('click',function(){				
+	$('#nschedule,#nscheduleDP,#nscheduleEF,#nscheduleEI,#nscheduleEO').on('click',function(){				
 		$("#tschedule select").empty();	
 		$("#tempschedule select").empty();	
 		$("#edate").val();			
@@ -2268,7 +2337,7 @@ $(function(){
 
 	
 	//GET TEMPLATE SMS
-	$('#sendSMSDP').on('click',function(){				
+	$('#sendSMSDP,#sendSmsEF,#sendSmsEI,#sendSmsEO').on('click',function(){				
 		//alert("getptask");
 		var id = JSON.parse(localStorage.getItem('key'));
 		var detalle=1;
@@ -2298,7 +2367,7 @@ $(function(){
 	});
 	
 	//GET TEMPLATE FAX
-	$('#sendFaxDP').on('click',function(){				
+	$('#sendFaxDP,#sendFaxEF,#sendFaxEI,#sendFaxEO').on('click',function(){				
 		//alert("getptask");
 		var id = JSON.parse(localStorage.getItem('key'));
 		var detalle=1;
@@ -2576,6 +2645,80 @@ $(function(){
 		$("textarea#detail").val("");
 		$("#taskk option:selected").val("Make Note");
 		
+	});
+	
+	$("#del-edate").on('click', function () {
+		$('#edate').val("");
+	});
+	
+	$("#del-execdateP").on('click', function () {
+		//alert('del fecha');
+		$('#execdateP').val("");
+	});
+	
+	$("#del-execdateP2").on('click', function () {
+		//alert('del fecha');
+		$('#execdateP2').val("");
+	});
+	
+	$("#del-schedateP").on('click', function () {
+		//alert('del fecha');
+		$('#schedateP').val("");
+	});
+	
+	$("#del-schedateP").on('click', function () {
+		//alert('del fecha');
+		$('#schedateP2').val("");
+	});
+	
+	$("#del-compdateC").on('click', function () {
+		//alert('del fecha');
+		$('#compdateC').val("");
+	});
+	
+	$("#del-compdateC2").on('click', function () {
+		//alert('del fecha');
+		$('#compdateC2').val("");
+	});
+	
+	$("#del-demo").on('click', function () {
+		//alert('del fecha');
+		$('#demo').val("");
+	});
+	
+	$("#del-demo2").on('click', function () {
+		//alert('del fecha');
+		$('#demo2').val("");
+	});
+	
+	$("#del-edateESche").on('click', function () {
+		//alert('del fecha');
+		$('#edateESche').val("");
+	});
+	
+	$("#del-edateEditPend").on('click', function () {
+		//alert('del fecha');
+		$('#edateEditPend').val("");
+	});
+	
+	$("#del-mailEI").on('click', function () {
+		//alert('del fecha');
+		$('#mailEI').val("");
+	});
+	
+	$("#del-mailEI2").on('click', function () {
+		//alert('del fecha');
+		$('#mailEI2').val("");
+	});
+	
+	$("#del-mailEO").on('click', function () {
+		//alert('del fecha');
+		$('#mailEO').val("");
+	});
+	
+	$("#del-mailEO2").on('click', function () {
+		//alert('del fecha');
+		$('#mailEO2').val("");
 	});
 	
 	
@@ -2856,7 +2999,16 @@ $(document).on("pagebeforeshow","#emailHtml",function(){
 		start=0;
 		cantidadEmail();
 		listadoEmailsInbox(start,settings.limit);
-	}						
+	}
+
+	$('#mailEI').mobipick({
+		dateFormat: "MM-dd-yyyy"
+	});	
+	
+	$('#mailEI2').mobipick({
+		dateFormat: "MM-dd-yyyy"
+	});	
+	
 });
 
 $(document).on("pagebeforeshow","#outboxEmailHtml",function(){	
@@ -2876,6 +3028,14 @@ $(document).on("pagebeforeshow","#outboxEmailHtml",function(){
 		cantidadEmail();
 		listadoEmailsOutbox(start,settings.limit);
 	}
+	
+	$('#mailEO').mobipick({
+		dateFormat: "MM-dd-yyyy"
+	});	
+	
+	$('#mailEO2').mobipick({
+		dateFormat: "MM-dd-yyyy"
+	});	
 							
 });
 
@@ -4068,11 +4228,17 @@ function pdf(){
 							<div style="margin-top:1px;padding-left:0px;margin-bottom:10px;" class="col-xs-3 col-sm-4">
 								<!--input style="line-height:25px;width: 100px !important;" type="date" value="" name="beet" id="beet"-->
 								<input style="line-height:25px;width: 100px !important;" name="demo" id="demo" class="i-txt" />
-							</div>		
+							</div>
+							<div style="margin-top:3px;" class="col-xs-2 col-sm-3">
+								<button id="del-demo" type="button" >&times;</button>
+							</div>	
 							<div id="between" class="col-xs-6 col-sm-3">
 								<!--input style="line-height:25px;width: 100px !important;margin-left: 115px;" type="date" name="beet2" id="beet2"-->
-								<input style="line-height:25px;width: 100px !important;margin-left: 115px;" name="demo2" id="demo2" class="i-txt" />
-							</div>			
+								<input style="line-height:25px;width: 100px !important;margin-left: 70px;" name="demo2" id="demo2" class="i-txt" />
+							</div>	
+							<div id="between2" style="margin-top: 3px;" class="col-xs-2 col-sm-3">
+								<button id="del-demo2" type="button" >&times;</button>
+							</div>	
 					</div>	
 				</div>
 			</div>	
@@ -4198,7 +4364,7 @@ function pdf(){
             <div class="row">
               
 				<div style="margin-bottom: 10px;" class="row">
-					<div class="col-xs-5 col-sm-2">
+					<div class="col-xs-4 col-sm-2">
 						From Mail
 					</div>
 					<div class="col-xs-7 col-sm-10">
@@ -4207,7 +4373,7 @@ function pdf(){
 				</div>
 				
 				<div style="margin-bottom: 10px;" class="row">
-					<div class="col-xs-5 col-sm-2">
+					<div class="col-xs-4 col-sm-2">
 						From
 					</div>
 					<div class="col-xs-7 col-sm-10">
@@ -4216,7 +4382,7 @@ function pdf(){
 				</div>
 				
 				<div style="margin-bottom: 10px;" class="row">
-					<div class="col-xs-5 col-sm-2">
+					<div class="col-xs-4 col-sm-2">
 						Email Content
 					</div>
 					<div class="col-xs-7 col-sm-10">
@@ -4225,7 +4391,7 @@ function pdf(){
 				</div>
 				
 				<div style="margin-bottom: 10px;" class="row">
-					<div class="col-xs-5 col-sm-2">
+					<div class="col-xs-4 col-sm-2">
 						Email Type
 					</div>
 					<div id="emailtypeI" class="col-xs-7 col-sm-10">
@@ -4234,7 +4400,7 @@ function pdf(){
 				</div>
 				
 				<div style="margin-bottom: 10px;" class="row">
-					<div class="col-xs-5 col-sm-2">
+					<div class="col-xs-4 col-sm-2">
 						Attachment
 					</div>
 					<div id="attachmentI" class="col-xs-7 col-sm-10">
@@ -4243,8 +4409,8 @@ function pdf(){
 				</div>
 				
 				<div style="margin-bottom: 10px;" class="row">
-					<div class="col-xs-5 col-sm-2">
-						Pending Content
+					<div class="col-xs-4 col-sm-2">
+						Pending Contact
 					</div>
 					<div id="pendingcontI" class="col-xs-7 col-sm-10">
 						<select id="pencontI" class="span6"></select>
@@ -4252,7 +4418,7 @@ function pdf(){
 				</div>
 				
 				<div style="margin-bottom: 10px;" class="row">
-					<div class="col-xs-5 col-sm-2">
+					<div class="col-xs-4 col-sm-2">
 						Pending Property
 					</div>
 					<div id="pendingproI" class="col-xs-7 col-sm-10">
@@ -4261,14 +4427,44 @@ function pdf(){
 				</div>
 				
 				<div style="margin-bottom: 10px;" class="row">
-					<div class="col-xs-5 col-sm-2">
+					<div class="col-xs-4 col-sm-2">
 						Status
 					</div>
 					<div id="statusI" class="col-xs-7 col-sm-10">
 						<select id="staI" class="span6"></select>
 					</div>
 				</div>
-            
+				<div style="margin-bottom: 10px;" class="row">
+					<div style="padding-top: 5px;" class="col-xs-4 col-sm-4">
+						Email Date
+					</div>
+						<div style="margin-bottom:10px;" id="maildate" class="col-xs-3 col-sm-3">
+							<select id="emaildate" class="span4">
+								<option value="Equal">Equal</option>
+								<option value="Greater Than">Greater Than</option>
+								<option value="Less Than">Less Than</option>
+								<option value="Equal or Less" >Equal or Less</option>
+								<option value="Equal or Greater">Equal or Greater</option>
+								<option value="Between">Between</option>
+							</select>
+						</div>		
+							<div style="margin-top:1px;padding-left:0px;margin-bottom:10px;" class="col-xs-3 col-sm-4">
+								<!--input style="line-height:25px;width: 100px !important;" type="date" value="" name="beet" id="beet"-->
+								<input style="line-height:25px;width: 100px !important;" name="mailEI" id="mailEI" class="i-txt" />
+							</div>	
+						<div style="margin-top:3px;" class="col-xs-2 col-sm-3">
+							<button id="del-mailEI" type="button" >&times;</button>
+						</div>		
+						<div id="betweenMail" class="col-xs-6 col-sm-3">
+							<!--input style="line-height:25px;width: 100px !important;margin-left: 115px;" type="date" name="beet2" id="beet2"-->
+							<input style="line-height:25px;width: 100px !important;margin-left: 70px;" name="mailEI2" id="mailEI2" class="i-txt" />
+						</div>
+						<div id="betweenMail2" style="margin-top: 3px;" class="col-xs-2 col-sm-3">
+							<button id="del-mailEI2" type="button" >&times;</button>
+						</div>	
+
+							
+					</div>
 			
 			</div>
             
@@ -4300,7 +4496,7 @@ function pdf(){
 					<div class="row">
 					  
 						<div style="margin-bottom: 10px;" class="row">
-							<div class="col-xs-5 col-sm-2">
+							<div class="col-xs-4 col-sm-2">
 								From Mail
 							</div>
 							<div class="col-xs-7 col-sm-10">
@@ -4309,7 +4505,7 @@ function pdf(){
 						</div>
 						
 						<div style="margin-bottom: 10px;" class="row">
-							<div class="col-xs-5 col-sm-2">
+							<div class="col-xs-4 col-sm-2">
 								From
 							</div>
 							<div class="col-xs-7 col-sm-10">
@@ -4318,7 +4514,7 @@ function pdf(){
 						</div>
 						
 						<div style="margin-bottom: 10px;" class="row">
-							<div class="col-xs-5 col-sm-2">
+							<div class="col-xs-4 col-sm-2">
 								Email Content
 							</div>
 							<div class="col-xs-7 col-sm-10">
@@ -4327,7 +4523,7 @@ function pdf(){
 						</div>
 						
 						<div style="margin-bottom: 10px;" class="row">
-							<div class="col-xs-5 col-sm-2">
+							<div class="col-xs-4 col-sm-2">
 								Email Type
 							</div>
 							<div id="emailtypeO" class="col-xs-7 col-sm-10">
@@ -4336,7 +4532,7 @@ function pdf(){
 						</div>
 						
 						<div style="margin-bottom: 10px;" class="row">
-							<div class="col-xs-5 col-sm-2">
+							<div class="col-xs-4 col-sm-2">
 								Attachment
 							</div>
 							<div id="attachmentO" class="col-xs-7 col-sm-10">
@@ -4345,7 +4541,7 @@ function pdf(){
 						</div>
 						
 						<div style="margin-bottom: 10px;" class="row">
-							<div class="col-xs-5 col-sm-2">
+							<div class="col-xs-4 col-sm-2">
 								Pending Content
 							</div>
 							<div id="pendingcontO" class="col-xs-7 col-sm-10">
@@ -4354,22 +4550,43 @@ function pdf(){
 						</div>
 						
 						<div style="margin-bottom: 10px;" class="row">
-							<div class="col-xs-5 col-sm-2">
+							<div class="col-xs-4 col-sm-2">
 								Pending Property
 							</div>
 							<div id="pendingproO" class="col-xs-7 col-sm-10">
 								<select id="penproO" class="span6"></select>
 							</div>
 						</div>
-						
 						<div style="margin-bottom: 10px;" class="row">
-							<div class="col-xs-5 col-sm-2">
-								Status
-							</div>
-							<div id="statusI" class="col-xs-7 col-sm-10">
-								<select id="staO" class="span6"></select>
-							</div>
-						</div>
+					<div style="padding-top: 5px;" class="col-xs-4 col-sm-4">
+						Email Date
+					</div>
+					<div style="margin-bottom:10px;" id="maildateO" class="col-xs-3 col-sm-3">
+						<select id="emaildateO" class="span4">
+							<option value="Equal">Equal</option>
+							<option value="Greater Than">Greater Than</option>
+							<option value="Less Than">Less Than</option>
+							<option value="Equal or Less" >Equal or Less</option>
+							<option value="Equal or Greater">Equal or Greater</option>
+							<option value="Between">Between</option>
+						</select>
+					</div>		
+					<div style="margin-top:1px;padding-left:0px;margin-bottom:10px;" class="col-xs-3 col-sm-4">
+							<!--input style="line-height:25px;width: 100px !important;" type="date" value="" name="beet" id="beet"-->
+							<input style="line-height:25px;width: 100px !important;" name="mailEO" id="mailEO" class="i-txt" />
+						</div>	
+					<div style="margin-top:3px;" class="col-xs-2 col-sm-3">
+						<button id="del-mailEO" type="button" >&times;</button>
+					</div>		
+					<div id="betweenMailO" class="col-xs-6 col-sm-3">
+						<!--input style="line-height:25px;width: 100px !important;margin-left: 115px;" type="date" name="beet2" id="beet2"-->
+						<input style="line-height:25px;width: 100px !important;margin-left: 70px;" name="mailEO2" id="mailEI2" class="i-txt" />
+					</div>
+					<div id="betweenMailO2" style="margin-top: 3px;" class="col-xs-2 col-sm-3">
+						<button id="del-mailEO2" type="button" >&times;</button>
+					</div>	
+				</div>
+						
 					
 					
 					</div>
@@ -4493,10 +4710,16 @@ function pdf(){
 						<div style="margin-top:1px;padding-left:0px;margin-bottom:10px;" class="col-xs-3 col-sm-3">
 								<!--input style="line-height:25px;width: 100px !important;" type="date" value="" name="beet" id="beet"-->
 								<input style="line-height:25px;width: 100px !important;" name="execdateP" id="execdateP" class="i-txt" />
-						</div>		
+						</div>
+						<div style="margin-top:3px;" class="col-xs-2 col-sm-3">
+							<button id="del-execdateP" type="button" >&times;</button>
+						</div>							
 						<div id="betweenExecPTask" class="col-xs-6 col-sm-3">
 								<!--input style="line-height:25px;width: 100px !important;margin-left: 115px;" type="date" name="beet2" id="beet2"-->
 								<input style="line-height:25px;width: 100px !important;margin-left: 115px;" name="execdateP2" id="execdateP2" class="i-txt" />
+						</div>
+						<div id="betweenExecPTask2" style="margin-left: 47px; margin-top: 3px;" class="col-xs-2 col-sm-3">
+								<button id="del-execdateP2" type="button" >&times;</button>
 						</div>
 							
 					</div>
@@ -4519,12 +4742,17 @@ function pdf(){
 						<div style="margin-top:1px;padding-left:0px;margin-bottom:10px;" class="col-xs-3 col-sm-3">
 								<!--input style="line-height:25px;width: 100px !important;" type="date" value="" name="beet" id="beet"-->
 								<input style="line-height:25px;width: 100px !important;" name="schedateP" id="schedateP" class="i-txt" />
-						</div>		
+						</div>	
+						<div style="margin-top:3px;" class="col-xs-2 col-sm-3">
+								<button id="del-schedateP" type="button" >&times;</button>
+						</div>
 						<div id="betweenSchePTask" class="col-xs-6 col-sm-3">
 								<!--input style="line-height:25px;width: 100px !important;margin-left: 115px;" type="date" name="beet2" id="beet2"-->
 								<input style="line-height:25px;width: 100px !important;margin-left: 115px;" name="schedateP2" id="schedateP2" class="i-txt" />
 						</div>
-							
+						<div id="betweenSchePTask2" style="margin-left: 47px; margin-top: 3px;" class="col-xs-2 col-sm-3">
+								<button id="del-execdateP2" type="button" >&times;</button>
+						</div>	
 					</div>
 					
 					<div style="margin-bottom: 10px;" class="row">
@@ -4706,12 +4934,17 @@ function pdf(){
 						<div style="margin-top:1px;padding-left:0px;margin-bottom:10px;" class="col-xs-3 col-sm-3">
 								<!--input style="line-height:25px;width: 100px !important;" type="date" value="" name="beet" id="beet"-->
 								<input style="line-height:25px;width: 100px !important;" name="compdateC" id="compdateC" class="i-txt" />
-						</div>		
+						</div>	
+						<div style="margin-top:3px;" class="col-xs-2 col-sm-3">
+							<button id="del-compdateC" type="button" >&times;</button>
+						</div>	
 						<div id="betweenCompTask" class="col-xs-6 col-sm-3">
 								<!--input style="line-height:25px;width: 100px !important;margin-left: 115px;" type="date" name="beet2" id="beet2"-->
 								<input style="line-height:25px;width: 100px !important;" name="compdateC2" id="compdateC2" class="i-txt" />
 						</div>
-							
+						<div id="betweenCompTask2" style="margin-left: 215px;margin-top:-28px;" class="col-xs-2 col-sm-3">
+							<button id="del-compdateC2" type="button" >&times;</button>
+						</div>	
 					</div>
 																						
 				</div>
@@ -5575,11 +5808,11 @@ function pdf(){
 
 <div data-role="page" id="detailProperties" data-add-back-btn="true">         
     <!--HEADER-->
-	<div style="background: #8ab420;border: #8ab420;height: 40px;" data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">				
+	<div style="background: #8ab420;border: #8ab420;" data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">				
 		<!--a style="background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:25px;margin-top:6px;background-position:center center;" class="ui-btn ui-btn-icon-notext excecute ui-first-child ui-last-child menu" data-excecute="weekly" data-rel="back" data-theme="b" href="#menuEmail"></a-->
 		<a style="height:30px;width:30px;background-image: url('img/back-w2.png');background-repeat:no-repeat;margin-left:-10px;margin-top:3px;background-position:center center;" class="ui-btn ui-first-child ui-last-child showPrevPage" data-excecute="main-Menu" data-theme="b" href="#" onclick="goBack();" ></a>
 		<div style="text-align:left;margin-left:15px;margin-top:3px;"><img src="resources/image/casa_rf-40.png" width="30" height="30"></div>
-		<div style="text-align:center;margin-left:20px;margin-top:-30px;"><img src="resources/image/detail-property.png" width="120" height="40"></div>
+		<div style="text-align:center;margin-top:-30px;"><img src="resources/image/detail-property.png" width="120" height="40"></div>
 		<div style="width: 100%;margin-top: -40px;text-align: right;">		
 			<a style="height: 30px;margin-right:5px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;margin-top:2px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child" data-excecute="weekly" data-theme="b" href="#menuDetailProperty"></a>
 		</div>
@@ -5843,14 +6076,14 @@ function pdf(){
 				<!--li><a class="deleteEmailInbox"                   id="deleteEI"          href="#" >&nbsp;&nbsp;&nbsp;&nbsp;Delete Emails</a></li-->
 				<!--li class="margen"><a class="reply"               id="replyEF"           href="#" class="btn btn-primary btn-lg" data-toggle="modal">&nbsp;&nbsp;&nbsp;&nbsp;Reply</a></li>
 				<li class="margen"><a class="forward"                id="forwardEF"         href="#" >&nbsp;&nbsp;&nbsp;&nbsp;Forward</a></li-->					
-				<li class="margen"><a class="assignContEmailInbox"   id="assContIn"         href="#assignContacts" class="btn btn-primary btn-lg" data-toggle="modal" >&nbsp;&nbsp;&nbsp;&nbsp;Assign Contacts</a></li>
-				<li class="margen"><a class="assignProEmailInbox"    id="assPropIn"         href="#assignProperty" class="btn btn-primary btn-lg" data-toggle="modal" >&nbsp;&nbsp;&nbsp;&nbsp;Assign Property</a></li>							
-				<li class="margen"><a class="newschedule"            id="newscheduleEF"     href="#addscheduleEmailFollow" class="btn btn-primary btn-lg" data-toggle="modal">&nbsp;&nbsp;&nbsp;&nbsp;New Schedule</a></li>
-				<li class="margen"><a class="sendContract"           id="sendContractEF"    href="#formContract2" >&nbsp;&nbsp;&nbsp;&nbsp;Send Contract</a></li>				
-				<li class="margen"><a class="sendEmail"              id="sendEmailEF"       href="#formEmail" class="btn btn-primary btn-lg" data-toggle="modal">&nbsp;&nbsp;&nbsp;&nbsp;Send Email</a></li>				
-				<li class="margen"><a class="sendFax"                id="sendFaxEF"         href="#formFax" class="btn btn-primary btn-lg" data-toggle="modal">&nbsp;&nbsp;&nbsp;&nbsp;Send Fax</a></li>				
-				<li class="margen"><a class="sendSMS"                id="sendSmsEF"         href="#formSMS" class="btn btn-primary btn-lg" data-toggle="modal">&nbsp;&nbsp;&nbsp;&nbsp;Send SMS</a></li>				
-				<li class="margen"><a class="makeCall"               id="sendMakeCallEF"    href="#formCall" class="btn btn-primary btn-lg" data-toggle="modal">&nbsp;&nbsp;&nbsp;&nbsp;Make Call</a></li>				
+				<li class="margen"><a class="assignContEmailInbox"   id="assContIn"         href="#assignContacts" class="btn btn-primary" data-toggle="modal" >&nbsp;&nbsp;&nbsp;&nbsp;Assign Contacts</a></li>
+				<li class="margen"><a class="assignProEmailInbox"    id="assPropIn"         href="#assignProperty" class="btn btn-primary" data-toggle="modal" >&nbsp;&nbsp;&nbsp;&nbsp;Assign Property</a></li>							
+				<li class="margen"><a class="newschedule"            id="nscheduleEI"       href="#addscheduleEmailFollow" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;New Schedule</a></li>
+				<li class="margen"><a class="sendContract"           id="sendContractEI"    href="#formContract2" >&nbsp;&nbsp;&nbsp;&nbsp;Send Contract</a></li>				
+				<li class="margen"><a class="sendEmail"              id="sendEmailEI"       href="#formEmail" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;Send Email</a></li>				
+				<li class="margen"><a class="sendFax"                id="sendFaxEI"         href="#formFax" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;Send Fax</a></li>				
+				<li class="margen"><a class="sendSMS"                id="sendSmsEI"         href="#formSMS" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;Send SMS</a></li>				
+				<li class="margen"><a class="makeCall"               id="makeCallEI"        href="#formCall" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;Make Call</a></li>				
 			</ul>
 		</div>	
 	</div>
@@ -5882,7 +6115,7 @@ function pdf(){
 			<a id="deleteEmailO" style="margin-right:5px;height:30px;background-image: url('img/delete-48.png');background-repeat:no-repeat; background-size: 25px 25px; margin-left:5px;margin-top:2px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child btn btn-primary btn-lg" data-excecute="editar" data-toggle="modal" role="button"  data-theme="b" href="#"></a>
 			<a id="replyEmailO" style="margin-right:5px;height:30px;background-image: url('img/reply2-48.png');background-repeat:no-repeat; background-size: 25px 25px; margin-left:5px;margin-top:2px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child btn btn-primary" data-excecute="editar" role="button"  data-theme="b" href="#pagReplyEmail"></a>
 			<a id="forwardEmailO" style="margin-right:5px;height:30px;background-image: url('img/forward2-48.png');background-repeat:no-repeat; background-size: 25px 25px; margin-left:5px;margin-top:2px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child btn btn-primary" data-excecute="editar" role="button"  data-theme="b" href="#pagForwardEmail"></a>
-			<a style="height: 30px;margin-right:5px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;margin-top:2px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child" data-excecute="weekly" data-theme="b" href="#menuDetailEmailInbox"></a>
+			<a style="height: 30px;margin-right:5px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;margin-top:2px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child" data-excecute="weekly" data-theme="b" href="#menuDetailEmailOutbox"></a>
 		</div>
 		
 	</div>
@@ -5908,15 +6141,16 @@ function pdf(){
 	
 	<!--FIN CONTENT-->	
 	<!--MENU EMAIL DETALLE -->
-	<div style="margin-top: 40px;" class="heightMenu" data-role="panel" id="menuDetailEmailOubox" data-display="overlay" data-position="right">
+	<div style="margin-top: 40px;" class="heightMenu" data-role="panel" id="menuDetailEmailOutbox" data-display="overlay" data-position="right">
 		<div id="menu" >
 			<ul data-role="listview" data-icon="false">	 
-				<a class="closeMenu" style="display:none;"               href="#" data-rel="close">Close</a>
-				<!--li><a class="deleteEmailInbox"       id="deleteEI"      href="#" >&nbsp;&nbsp;&nbsp;&nbsp;Delete Emails</a></li-->
-				<li class="margen"><a class="reply"      id="replyO"      href="#" class="btn btn-primary btn-lg" data-toggle="modal">&nbsp;&nbsp;&nbsp;&nbsp;Reply</a></li>
-				<li class="margen"><a class="forward"    id="forwardO"    href="#" >&nbsp;&nbsp;&nbsp;&nbsp;Forward</a></li>					
-				<!--li style="border-bottom: 2px solid #ccc;"><a class="assignContEmailInbox"   id="asscontEIn"      href="#" >&nbsp;&nbsp;&nbsp;&nbsp;Assign Contacts</a></li>
-				<li style="border-bottom: 2px solid #ccc;"><a class="assignProEmailInbox"    id="assiproEIn"      href="#" >&nbsp;&nbsp;&nbsp;&nbsp;Assign Property</a></li-->				
+				<a class="closeMenu" style="display:none;"                                  href="#" data-rel="close">Close</a>
+				<li class="margen"><a class="newschedule"            id="nscheduleEO"       href="#addscheduleEmailFollow" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;&nbsp;New Schedule</a></li>
+				<li class="margen"><a class="sendContract"           id="sendContractEO"    href="#formContract2" >&nbsp;&nbsp;&nbsp;&nbsp;Send Contract</a></li>				
+				<li class="margen"><a class="sendEmail"              id="sendEmailEO"       href="#formEmail" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;Send Email</a></li>				
+				<li class="margen"><a class="sendFax"                id="sendFaxEO"         href="#formFax" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;&nbsp;Send Fax</a></li>				
+				<li class="margen"><a class="sendSMS"                id="sendSmsEO"         href="#formSMS" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;&nbsp;Send SMS</a></li>				
+				<li class="margen"><a class="makeCall"               id="makeCallEO"        href="#formCall" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;&nbsp;Make Call</a></li>				
 			</ul>
 		</div>	
 	</div>
@@ -6176,12 +6410,12 @@ function pdf(){
 				<!--li><a class="deleteEmailInbox"       id="deleteEI"              href="#" >&nbsp;&nbsp;&nbsp;&nbsp;Delete Emails</a></li-->
 				<!--li class="margen"><a class="reply"         id="replyEF"         href="#" class="btn btn-primary btn-lg" data-toggle="modal">&nbsp;&nbsp;&nbsp;&nbsp;Reply</a></li>
 				<li class="margen"><a class="forward"       id="forwardEF"          href="#" >&nbsp;&nbsp;&nbsp;&nbsp;Forward</a></li-->					
-				<li class="margen"><a class="newschedule"   id="newscheduleEF"      href="#addscheduleEmailFollow" class="btn btn-primary btn-lg" data-toggle="modal">&nbsp;&nbsp;&nbsp;&nbsp;New Schedule</a></li>
-				<li class="margen"><a class="sendContract"  id="sendContractEF"     href="#" >&nbsp;&nbsp;&nbsp;&nbsp;Send Contract</a></li>				
-				<li class="margen"><a class="sendEmail"     id="sendEmailEF"        href="#formEmail" class="btn btn-primary btn-lg" data-toggle="modal">&nbsp;&nbsp;&nbsp;&nbsp;Send Email</a></li>				
-				<li class="margen"><a class="sendFax"       id="sendFaxEF"          href="#formFax" class="btn btn-primary btn-lg" data-toggle="modal">&nbsp;&nbsp;&nbsp;&nbsp;Send Fax</a></li>				
-				<li class="margen"><a class="sendSMS"       id="sendSmsEF"          href="#formSMS" class="btn btn-primary btn-lg" data-toggle="modal">&nbsp;&nbsp;&nbsp;&nbsp;Send SMS</a></li>				
-				<li class="margen"><a class="makeCall"      id="sendMakeCallEF"     href="#formCall" class="btn btn-primary btn-lg" data-toggle="modal">&nbsp;&nbsp;&nbsp;&nbsp;Make Call</a></li>				
+				<li class="margen"><a class="newschedule"   id="nscheduleEF"        href="#addscheduleEmailFollow" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;&nbsp;New Schedule</a></li>
+				<li class="margen"><a class="sendContract"  id="sendContractEF"     href="#formContract2" >&nbsp;&nbsp;&nbsp;&nbsp;Send Contract</a></li>				
+				<li class="margen"><a class="sendEmail"     id="sendEmailEF"        href="#formEmail" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;&nbsp;Send Email</a></li>				
+				<li class="margen"><a class="sendFax"       id="sendFaxEF"          href="#formFax" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;Send Fax</a></li>				
+				<li class="margen"><a class="sendSMS"       id="sendSmsEF"          href="#formSMS" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;&nbsp;Send SMS</a></li>				
+				<li class="margen"><a class="makeCall"      id="makeCallEF"     href="#formCall" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;Make Call</a></li>				
 			</ul>
 		</div>
 	</div>
@@ -7156,7 +7390,7 @@ function pdf(){
 							<input type="file" name="file8" id="imageUploadEI" class="hide"/> 
 					</div>	
 				</div>
-				<div class="row">
+				<div style="margin-top:-35px;" class="row">
 					<div style="padding-left: 25px;padding-top: 5px;" class="col-xs-3 col-sm-2">
 						Subject
 					</div>					
@@ -7282,7 +7516,7 @@ function pdf(){
 							<input type="file" name="file8" id="imageUploadEO" class="hide"/> 
 					</div>	
 				</div>
-				<div class="row">
+				<div style="margin-top:-35px;" class="row">
 					<div style="padding-left: 25px;padding-top: 5px;" class="col-xs-3 col-sm-2">
 						Subject
 					</div>					
@@ -7387,7 +7621,7 @@ function pdf(){
 	
 	<div data-role="content" >	
 
-		<div style="background:#fff;margin-top:85px" id="historial">
+		<div style="background:#fff;" id="historial">
 			
 			<ul style="list-style: none;margin-left:-40px;" class="page_history2">
 			
@@ -7455,7 +7689,7 @@ function pdf(){
 	
 	<div data-role="content" >	
 		
-		<div style="background:#fff;margin-top:80px;" id="schedule">
+		<div style="background:#fff;" id="schedule">
 			<ul style="list-style: none;margin-left:-40px;" class="page_schedule">
 			
 			</ul>
@@ -7475,9 +7709,9 @@ function pdf(){
 		<div style="text-align:left;margin-left:15px;margin-top:3px;"><img src="resources/image/casa_rf-40.png" width="30" height="30"></div>
 		<div style="text-align:center;margin-left:20px;margin-top:-30px;"><img src="resources/image/email-followup.png" width="120" height="40"></div>		
 		
-		<div style="width: 100%;margin-top:-39px;text-align: right;">
+		<div style="width: 100%;margin-top:-37px;text-align: right;">
 			<a id="addEfollow" style="margin-top:-2px;margin-right: 10px;height:35px;width:35px;background-image: url('img/add-email.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;" class="ui-btn excecute ui-first-child ui-last-child btn btn-primary" data-excecute="editar" role="button"  data-theme="b" href="#pagAddComposeEFHtml"></a>
-			<a style="margin-top:1px;height:30px;width:30px;margin-right:10px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child" data-excecute="contacts" data-theme="b" href="#menuEmailFollow"></a>
+			<a style="margin-top:1px;height:30px;width:30px;margin-right:5px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child" data-excecute="contacts" data-theme="b" href="#menuEmailFollow"></a>
 		</div>
 	
 		<div style="background: #8ab420;border: #8ab420;margin-top:40px;" data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false" id="header_emailfollow">				
@@ -7510,7 +7744,7 @@ function pdf(){
 					<body></body>
 				</html>
 			</iframe-->
-		<div style="background:#fff;margin-top:80px;" id="correofollow">
+		<div style="background:#fff;" id="correofollow">
 			<ul style="list-style: none;margin-left:-40px;" class="page_correo">
 			
 			</ul>
@@ -7796,9 +8030,12 @@ function pdf(){
 					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-4 col-sm-2">
 						Execute Date
 					</div>
-					<div id="eedate" class="col-xs-7 col-sm-10">
-						<input id="edate" placeholder="E. Date" type="text" value="" class="span4" />
-						<!--a href="#" data-role="button" data-icon="delete" data-iconpos="notext"></a-->
+					<div id="eedate" class="col-xs-6 col-sm-10">
+						<input id="edate" readonly="false" placeholder="E. Date" type="text" value="" class="span4" />
+					</div>
+					<div style="margin-top:10px;margin-left:-10px;padding-left: 0px;" class="col-xs-2 col-sm-10">
+						<a  id="del-edate" style="margin-right:10px;height:14px;width:14px;margin-bottom:5px;background-image: url('img/del-16.png');background-repeat:no-repeat; background-size: 10px 10px;margin-left:-3px;margin-top:2px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child btn btn-primary" data-excecute="editar" role="button"  data-theme="b" href="#"></a>
+						<!--a id="del-edate" style="margin-top:-35px;margin-left: 172px;" data-role="button" data-icon="delete" data-iconpos="notext"></a-->
 					</div>
 				</div>
 				<div class="row">									
@@ -7930,7 +8167,7 @@ function pdf(){
 							<input type="file" name="file8" id="imageUploadEF" class="hide"/> 
 					</div>	
 				</div>
-				<div class="row">
+				<div style="margin-top:-35px;" class="row">
 					<div style="padding-left: 25px;padding-top: 5px;" class="col-xs-3 col-sm-2">
 						Subject
 					</div>					
@@ -7941,49 +8178,12 @@ function pdf(){
 						<textarea style="height: 90px !important;" name="subject" id="subjectEF" type="text" placeholder="Subject" class="texta1" ></textarea>
 					</div>
 				</div>	
-				<!--div class="row">
-					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-3 col-sm-2">
-						Subject
-					</div>
-					<div id="ssubjectEF" class="col-xs-8 col-sm-10">
-						 <input type="text" id="subjectEF" placeholder="Subject"/>
-						 
-					</div>
-				</div>
-				<div class="row">
-					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-3 col-sm-2">
-						Attach
-					</div>
-					<div class="row">
-					<div id="uuploadfileEF" class="col-xs-8 col-sm-10">
-						 <input type="text" id="uploadFileEF" placeholder="Select a file"/>
-					</div>
-					</div>
-				</div>
-				<div class="row">
-					<div style="margin-left:25px;text-align:center;" class=" col-xs-8 col-sm-10">
-						<div style="display: inline-flex;" class="fileUpload btn btn-primary">
-							<span>Browser</span>
-							<input type="file" class="upload" id="uploadBtnComposeEF" />
-						</div>
-					</div>
-				</div>
-				<div id="browserCompEF"></div>
-				<br>
-				<div class="row">		
-					<div style="text-align:center;margin-left:65px;" class="col-xs-8 col-sm-10">
-						<div style="display: inline-flex;" class="fileUpload btn btn-primary">
-							<span>Another file</span>
-							<input onclick="addInputComposeEF()" class="another" />	
-						</div>
-					</div>
-				</div>
-				<br-->
+				
 				<div class="row">
 					<!--div style="padding-left: 25px; padding-top: 10px;" class="col-xs-3 col-sm-2">
 						Text
 					</div-->
-					<div id="email2Cont" class="col-xs-8 col-sm-10">
+					<div id="email2Cont" class="col-xs-11 col-sm-10">
 						<textarea style="height:322px;  width: 100%;" name ="msg" id="detailsEF" class="texta1" placeholder="Your Detail here.." data-placement="top" data-trigger="manual"></textarea>
 						<!--textarea style="height:222px;" id="textemailEF" class="form-control" placeholder="Your text here.." data-placement="top" data-trigger="manual"></textarea-->
 					</div>
@@ -8208,7 +8408,7 @@ function pdf(){
 		<div style="margin-left: 1px;" class="row formC" id="formEditSchedule">
 			<form style="margin-top: 30px;" class="form-inline">
 				<div class="row">					
-					<div style="padding-left: 25px;" class="col-xs-5 col-sm-2">
+					<div style="padding-left: 25px;" class="col-xs-4 col-sm-2">
 						Status
 					</div>
 					<div id="statussESche" class="col-xs-6 col-sm-10">
@@ -8216,15 +8416,19 @@ function pdf(){
 					</div>
 				</div>
 				<div class="row">				
-					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-5 col-sm-2">
+					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-4 col-sm-2">
 						Execute Date
 					</div>
 					<div id="ExdateESche" class="col-xs-6 col-sm-10">
 						<input name="edateESche" id="edateESche" class="i-txt">					
 					</div>
+					<div style="margin-top:10px;margin-left:-10px;padding-left: 0px;" class="col-xs-2 col-sm-10">
+						<a  id="del-edateESche" style="margin-right:10px;height:14px;width:14px;margin-bottom:5px;background-image: url('img/del-16.png');background-repeat:no-repeat; background-size: 10px 10px;margin-left:-3px;margin-top:2px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child btn btn-primary" data-excecute="editar" role="button"  data-theme="b" href="#"></a>
+						<!--a id="del-edate" style="margin-top:-35px;margin-left: 172px;" data-role="button" data-icon="delete" data-iconpos="notext"></a-->
+					</div>
 				</div>
 				<div class="row">			
-					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-5 col-sm-2">
+					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-4 col-sm-2">
 						Execute Hour
 					</div>
 					<div id="ExhourESche" style="height: 20px;margin-top: -1px;" class="input-group date form_datetime col-xs-6 col-sm-10 col-md-5" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii">
@@ -8235,10 +8439,10 @@ function pdf(){
 					<input type="hidden" id="dtp_input3" value="" /><br/>	
 				</div>
 				<div class="row">
-					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-5 col-sm-2">
+					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-4 col-sm-2">
 						Execute Type
 					</div>
-					<div class="col-xs-6 col-sm-10">
+					<div class="col-xs-7 col-sm-10">
 						 <select onchange="test2();" id="etypeESche" class="form-control">
 							<option value="1">Manual</option>	
 							<option value="2">Automatic</option>												
@@ -8246,10 +8450,10 @@ function pdf(){
 					</div>
 				</div>
 				<div class="row">
-					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-5 col-sm-2">
+					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-4 col-sm-2">
 						Task
 					</div>
-					<div id="taskkESche" class="col-xs-6 col-sm-10">
+					<div id="taskkESche" class="col-xs-7 col-sm-10">
 						 <select id="taskESche" class="form-control">
 							<option value="1">Send SMS</option>
 							<option value="2">Receive SMS</option>
@@ -8270,7 +8474,7 @@ function pdf(){
 							<option value="17" >Make Note</option>
 						</select>		
 					</div>
-					<div style="display:none;" id="taskkESche2" class="col-xs-6 col-sm-10">
+					<div style="display:none;" id="taskkESche2" class="col-xs-7 col-sm-10">
 						 <select id="taskESch2e" class="form-control">
 							<option value="1">Send SMS</option>							
 							<option value="3">Send FAX</option>							
@@ -8283,7 +8487,10 @@ function pdf(){
 					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-5 col-sm-2">
 						Schedule Detail
 					</div>
-					<div id="detailESchee" class="col-xs-6 col-sm-10">
+				</div>
+				
+				<div class="row">
+					<div id="detailESchee" class="col-xs-10 col-sm-10">
 						 <textarea style="height:222px;  width: 100%;" id="detailESche" class="form-control" placeholder="Your Detail here.." data-placement="top" data-trigger="manual"></textarea>		
 					</div>
 				</div>
@@ -8292,7 +8499,10 @@ function pdf(){
 					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-5 col-sm-2">
 						Detail
 					</div>
-					<div id="detailcompESchee" class="col-xs-6 col-sm-10">
+				</div>
+				
+				<div class="row">
+					<div id="detailcompESchee" class="col-xs-10 col-sm-10">
 						 <textarea style="height:222px;  width: 100%;" id="compdetailESche" class="form-control" placeholder="Your Detail here.." data-placement="top" data-trigger="manual"></textarea>
 					</div>
 				</div>
@@ -8355,7 +8565,7 @@ function pdf(){
 		<div style="margin-left: 1px;" class="row formC" id="formEditSchedule">
 			<form style="margin-top: 30px;" class="form-inline">
 				<div class="row">					
-					<div style="padding-left: 25px;" class="col-xs-5 col-sm-2">
+					<div style="padding-left: 25px;" class="col-xs-4 col-sm-2">
 						Status
 					</div>
 					<div id="statussEditPend" class="col-xs-6 col-sm-10">
@@ -8363,15 +8573,19 @@ function pdf(){
 					</div>
 				</div>
 				<div class="row">				
-					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-5 col-sm-2">
+					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-4 col-sm-2">
 						Execute Date
 					</div>
 					<div id="ExdateEditPend" class="col-xs-6 col-sm-10">
 						<input name="edateEditPend" id="edateEditPend" class="i-txt">		
 					</div>
+					<div style="margin-top:10px;margin-left:-10px;padding-left: 0px;" class="col-xs-2 col-sm-10">
+						<a  id="del-edateEditPend" style="margin-right:10px;height:14px;width:14px;margin-bottom:5px;background-image: url('img/del-16.png');background-repeat:no-repeat; background-size: 10px 10px;margin-left:-3px;margin-top:2px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child btn btn-primary" data-excecute="editar" role="button"  data-theme="b" href="#"></a>
+						<!--a id="del-edate" style="margin-top:-35px;margin-left: 172px;" data-role="button" data-icon="delete" data-iconpos="notext"></a-->
+					</div>
 				</div>
 				<div class="row">			
-					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-5 col-sm-2">
+					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-4 col-sm-2">
 						Execute Hour
 					</div>
 					<div id="ExhourEditPend" style="height: 20px;margin-top: -1px;" class="input-group date form_datetime col-xs-6 col-sm-10 col-md-5" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii">
@@ -8382,10 +8596,10 @@ function pdf(){
 					<input type="hidden" id="dtp_input3" value="" /><br/>	
 				</div>
 				<div class="row">
-					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-5 col-sm-2">
+					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-4 col-sm-2">
 						Execute Type
 					</div>
-					<div class="col-xs-6 col-sm-10">
+					<div class="col-xs-7 col-sm-10">
 						 <select onchange="test3();" id="etypeEditPend" class="form-control">
 							<option value="1">Manual</option>	
 							<option value="2">Automatic</option>												
@@ -8393,10 +8607,10 @@ function pdf(){
 					</div>
 				</div>
 				<div class="row">
-					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-5 col-sm-2">
+					<div style="padding-left: 25px;padding-top: 10px;" class="col-xs-4 col-sm-2">
 						Task
 					</div>
-					<div id="taskkEditPend" class="col-xs-6 col-sm-10">
+					<div id="taskkEditPend" class="col-xs-7 col-sm-10">
 						 <select id="taskEditPend" class="form-control">
 							<option value="1">Send SMS</option>
 							<option value="2">Receive SMS</option>
