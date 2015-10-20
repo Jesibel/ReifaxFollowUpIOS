@@ -71,25 +71,25 @@
   <icon src="resources/image/reifax_FOLLOW_UP_logo-152.png"  gap:platform="ios"        width="152" height="152" />
   
 
-  <gap:splash src="resources/image/reifax_FOLLOW_UP-320x480.png"  gap:platform="android" gap:qualifier="port-ldpi" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-320x480.png"   gap:platform="android" gap:qualifier="port-ldpi" />
   <gap:splash src="resources/image/reifax_FOLLOW_UP-768x1024.png"  gap:platform="android" gap:qualifier="port-mdpi" />
-  <gap:splash src="resources/image/reifax_FOLLOW_UP-480x800.png"  gap:platform="android" gap:qualifier="port-hdpi" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-480x800.png"   gap:platform="android" gap:qualifier="port-hdpi" />
   <gap:splash src="resources/image/reifax_FOLLOW_UP-720x1280.png"  gap:platform="android" gap:qualifier="port-xhdpi" />
   
-  <gap:splash src="resources/image/reifax_FOLLOW_UP-480x320.png"  gap:platform="android" gap:qualifier="land-ldpi" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-480x320.png"   gap:platform="android" gap:qualifier="land-ldpi" />
   <gap:splash src="resources/image/reifax_FOLLOW_UP-1024x768.png"  gap:platform="android" gap:qualifier="land-mdpi" />
-  <gap:splash src="resources/image/reifax_FOLLOW_UP-800x480.png"  gap:platform="android" gap:qualifier="land-hdpi" />
-  <gap:splash src="resources/image/reifax_FOLLOW_UP-1280x720.png" gap:platform="android" gap:qualifier="land-xhdpi" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-800x480.png"   gap:platform="android" gap:qualifier="land-hdpi" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-1280x720.png"  gap:platform="android" gap:qualifier="land-xhdpi" />
     
-  <gap:splash src="resources/image/reifax_FOLLOW_UP-320x480.png"  gap:platform="ios"     width="320"  height="480" />
-  <gap:splash src="resources/image/reifax_FOLLOW_UP-480x320.png"  gap:platform="ios"     width="480"  height="320" />
-  <gap:splash src="resources/image/reifax_FOLLOW_UP-640x960.png"  gap:platform="ios"     width="640"  height="960" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-320x480.png"   gap:platform="ios"     width="320"  height="480" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-480x320.png"   gap:platform="ios"     width="480"  height="320" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-640x960.png"   gap:platform="ios"     width="640"  height="960" />
   <gap:splash src="resources/image/reifax_FOLLOW_UP-640x1136.png"  gap:platform="ios"     width="640"  height="1136" />
   <gap:splash src="resources/image/reifax_FOLLOW_UP-768x1024.png"  gap:platform="ios"     width="768"  height="1024" />
-  <gap:splash src="resources/image/reifax_FOLLOW_UP-960x640.png"  gap:platform="ios"     width="960"  height="640" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-960x640.png"   gap:platform="ios"     width="960"  height="640" />
   <gap:splash src="resources/image/reifax_FOLLOW_UP-1024x768.png"  gap:platform="ios"     width="1024" height="768" />
-  <gap:splash src="resources/image/reifax_FOLLOW_UP-1536x2008.png"  gap:platform="ios"     width="1536" height="2008" />
-  <gap:splash src="resources/image/reifax_FOLLOW_UP-2048x1496.png"  gap:platform="ios"     width="2048" height="1496" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-1536x2008.png" gap:platform="ios"     width="1536" height="2008" />
+  <gap:splash src="resources/image/reifax_FOLLOW_UP-2048x1496.png" gap:platform="ios"     width="2048" height="1496" />
 
   <gap:plugin name="org.apache.cordova.media" />	
 
