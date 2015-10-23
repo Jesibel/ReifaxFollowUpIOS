@@ -690,7 +690,7 @@ $(document).ready(function(){
 			tinyMCE.triggerSave(true,true);
 			var formData 		= new FormData($("#envioEmailEI")[0]);
 				$.ajax({
-					url: 'http://reifax.com/mreifax/mysetting_tabs/myfollowup_tabs/properties_followupEmail.php',
+					url: 'http://reifax.com/FollowupReifax/'+folder+'/mysetting_tabs/myfollowup_tabs/properties_followupEmail.php',
 					type: 'POST',
 					data: formData,
 					cache: false,
@@ -729,7 +729,7 @@ $(document).ready(function(){
 			tinyMCE.triggerSave(true,true);			
 			var formData 		= new FormData($("#envioEmailEO")[0]);
 				$.ajax({
-					url: 'http://reifax.com/mreifax/mysetting_tabs/myfollowup_tabs/properties_followupEmail.php',
+					url: 'http://reifax.com/FollowupReifax/'+folder+'/mysetting_tabs/myfollowup_tabs/properties_followupEmail.php',
 					type: 'POST',
 					data: formData,
 					cache: false,
@@ -987,7 +987,7 @@ $(document).ready(function(){
 });
 </script>
 <script type="text/javascript">
-	
+	var folder='developer';
 	var position=0;
 	var posi=0;
 	var pos=0;
@@ -1000,6 +1000,8 @@ $(document).ready(function(){
 	var ciclo='';
 	
 	var loader='';
+	
+	var contactname='';
 		
 	var arr = new Array();
 	var checkid = new Array();
@@ -1080,7 +1082,7 @@ $(function(){
 			'type': 'ContactEmailsList'
 		};
 				 
-		$.post("http://reifax.com/mreifax/mysetting_tabs/myfollowup_tabs/properties_followagent.php", data, function(cont) {
+		$.post('http://reifax.com/FollowupReifax/'+folder+'/mysetting_tabs/myfollowup_tabs/properties_followagent.php', data, function(cont) {
 					
 			valor     = cont;
 			var obj = JSON.parse(valor);
@@ -1122,7 +1124,7 @@ $(function(){
 			'type': 'ContactEmailsList'
 		};
 				 
-		$.post("http://reifax.com/mreifax/mysetting_tabs/myfollowup_tabs/properties_followagent.php", data, function(cont) {
+		$.post('http://reifax.com/FollowupReifax/'+folder+'/mysetting_tabs/myfollowup_tabs/properties_followagent.php', data, function(cont) {
 					
 			valor     = cont;
 			var obj = JSON.parse(valor);
@@ -1829,14 +1831,36 @@ $(function(){
 			var typeFollow = typeFollow.type;
 			var id = JSON.parse(localStorage.getItem('key'));
 			var parcelid =id.parcelid;
+			var contactname = JSON.parse(localStorage.getItem('contactname'));
+			console.log(contactname);
+			if ((contactname=='') || (contactname==null)){
+				contactname='Default';
+			}else{
+				contactname =contactname.contactname;
+			}
 		}else if (checkid.length==1){
 			var typeFollow = JSON.parse(localStorage.getItem('typefollow'));
 			var typeFollow = typeFollow.typefollow;
 			var pid = JSON.parse(localStorage.getItem('pid'));
 			var parcelid =pid.pid;
+			var contactname = JSON.parse(localStorage.getItem('contactname'));
+			console.log(contactname);
+			if ((contactname=='') || (contactname==null)){
+				contactname='Default';
+			}else{
+				contactname =contactname.contactname;
+			}
 		}else{
 			var parcelid =checkid;
 			ciclo= 'multi';
+			var contactname ='';
+			var contactname = JSON.parse(localStorage.getItem('contactname'));
+			console.log(contactname);
+			if ((contactname=='') || (contactname==null)){
+				contactname='Default';
+			}else{
+				contactname =contactname.contactname;
+			}
 			//alert(parcelid);
 		}
 		
@@ -1853,6 +1877,7 @@ $(function(){
 				//alert(checkid[i]);
 				var imgVal = $('#imageUpload').val(); 
 				$("input#userid").val(userid);
+				$("input#contactname").val(contactname);
 				$("input#pid").val(checkid[i]);
 						
 				$("input#typeFollow").val(typeFollow);
@@ -1860,7 +1885,7 @@ $(function(){
 				var formData 		= new FormData($("#envioEmail")[0]);
 				$.mobile.loading().show();
 				$.ajax({
-					url: 'http://reifax.com/mreifax/mysetting_tabs/myfollowup_tabs/properties_followsendmail.php',
+					url: 'http://reifax.com/FollowupReifax/'+folder+'/mysetting_tabs/myfollowup_tabs/properties_followsendmail.php',
 					type: 'POST',
 					data: formData,
 					cache: false,
@@ -1878,6 +1903,9 @@ $(function(){
 							pushh=true;
 							longProperties(checkid,pushh);
 						}
+						$("#temp select").empty();	
+						$("#contactmail select").empty();	
+						localStorage.removeItem('contactname');
 					},
 					//si ha ocurrido un error
 					error: function(){
@@ -1899,6 +1927,7 @@ $(function(){
 			
 			var imgVal = $('#imageUpload').val(); 
 			$("input#userid").val(userid);
+			$("input#contactname").val(contactname);
 			$("input#pid").val(parcelid);
 					
 			$("input#typeFollow").val(typeFollow);
@@ -1906,7 +1935,7 @@ $(function(){
 			var formData 		= new FormData($("#envioEmail")[0]);
 			
 			$.ajax({
-				url: 'http://reifax.com/mreifax/mysetting_tabs/myfollowup_tabs/properties_followsendmail.php',
+				url: 'http://reifax.com/FollowupReifax/'+folder+'/myfollowup_tabs/properties_followsendmail.php',
 				type: 'POST',
 				data: formData,
 				cache: false,
@@ -1925,9 +1954,12 @@ $(function(){
 					});
 					$.mobile.changePage('#followingHtml');
 					if (checkid!=''){
-							pushh=true;
-							longProperties(checkid,pushh);
-						}
+						pushh=true;
+						longProperties(checkid,pushh);
+					}
+					$("#temp select").empty();	
+					$("#contactmail select").empty();	
+					localStorage.removeItem('contactname');
 				},
 				//si ha ocurrido un error
 				error: function(){
@@ -1949,15 +1981,36 @@ $(function(){
 			var typeFollow = typeFollow.type;
 			var id = JSON.parse(localStorage.getItem('key'));
 			var parcelid =id.parcelid;
+			var contactname = JSON.parse(localStorage.getItem('contactname'));
+			console.log(contactname);
+			if ((contactname=='') || (contactname==null)){
+				contactname='Default';
+			}else{
+				contactname =contactname.contactname;
+			}
 		}else if (checkid==1){
 			var typeFollow = JSON.parse(localStorage.getItem('typefollow'));
 			var typeFollow = typeFollow.typefollow;
 			var pid = JSON.parse(localStorage.getItem('pid'));
 			var parcelid =pid.pid;
+			var contactname = JSON.parse(localStorage.getItem('contactname'));
+			console.log(contactname);
+			if ((contactname=='') || (contactname==null)){
+				contactname='Default';
+			}else{
+				contactname =contactname.contactname;
+			}
 		}else{
 			var parcelid =checkid;
 			ciclo= 'multi';
 			//alert(parcelid);
+			var contactname = JSON.parse(localStorage.getItem('contactname'));
+			console.log(contactname);
+			if ((contactname=='') || (contactname==null)){
+				contactname='Default';
+			}else{
+				contactname =contactname.contactname;
+			}
 		}
 		
 		tinyMCE.triggerSave(true,true);
@@ -2000,6 +2053,7 @@ $(function(){
 				//alert(checkid[i]);
 				var imgVal = $('#imageUpload').val(); 
 				$("input#userid").val(userid);
+				$("input#contactname").val(contactname);
 				$("input#type").val('insert');
 				$("input#pid").val(checkid[i]);	
 				$("input#parcelid").val(checkid[i]);	
@@ -2013,7 +2067,7 @@ $(function(){
 				var formData 		= new FormData($("#envioEmail")[0]);
 				$.mobile.loading().show();
 				$.ajax({
-					url: 'http://reifax.com/mreifax/mysetting_tabs/myfollowup_tabs/myfollowhistory/properties_followshedule.php',
+					url: 'http://reifax.com/FollowupReifax/'+folder+'/mysetting_tabs/myfollowup_tabs/myfollowhistory/properties_followshedule.php',
 					type: 'POST',
 					data: formData,
 					cache: false,
@@ -2025,14 +2079,17 @@ $(function(){
 					},
 					success: function(data){
 						if (data){
-						send=true;
-						$.mobile.loading().hide();
-						document.getElementById('header_two').style.display = "none";
-						$.mobile.changePage('#followingHtml');
-						if (checkid!=''){
-							pushh=true;
-							longProperties(checkid,pushh);
-						}
+							send=true;
+							$.mobile.loading().hide();
+							document.getElementById('header_two').style.display = "none";
+							$.mobile.changePage('#followingHtml');
+							if (checkid!=''){
+								pushh=true;
+								longProperties(checkid,pushh);
+							}
+							$("#temp select").empty();	
+							$("#contactmail select").empty();	
+							localStorage.removeItem('contactname');
 						}
 					},
 					//si ha ocurrido un error
@@ -2054,6 +2111,7 @@ $(function(){
 			var imgVal = $('#imageUpload').val(); 
 		
 			$("input#userid").val(userid);
+			$("input#contactname").val(contactname);
 			$("input#type").val('insert');
 			$("input#pid").val(parcelid);	
 			$("input#parcelid").val(parcelid);	
@@ -2068,7 +2126,7 @@ $(function(){
 			
 			$.mobile.loading().show();
 			$.ajax({
-				url: 'http://reifax.com/mreifax/mysetting_tabs/myfollowup_tabs/myfollowhistory/properties_followshedule.php',
+				url: 'http://reifax.com/FollowupReifax/'+folder+'/mysetting_tabs/myfollowup_tabs/myfollowhistory/properties_followshedule.php',
 				type: 'POST',
 				data: formData,
 				cache: false,
@@ -2080,18 +2138,21 @@ $(function(){
 				},
 				success: function(data){
 					if (data){
-					//alert('All Follow Schedule Task were created. 0 presented errors. Please, verify them on the Pending Task tab' );
-					$.mobile.loading().hide();
-					bootbox.alert({
-						title: 'Schedule Task',
-						message: 'All Follow Schedule Task were created. 0 presented errors. Please, verify them on the Pending Task tab.'
-					});
-					document.getElementById('header_two').style.display = "none";
-					$.mobile.changePage('#followingHtml');
-					if (checkid!=''){
+						//alert('All Follow Schedule Task were created. 0 presented errors. Please, verify them on the Pending Task tab' );
+						$.mobile.loading().hide();
+						bootbox.alert({
+							title: 'Schedule Task',
+							message: 'All Follow Schedule Task were created. 0 presented errors. Please, verify them on the Pending Task tab.'
+						});
+						document.getElementById('header_two').style.display = "none";
+						$.mobile.changePage('#followingHtml');
+						if (checkid!=''){
 							pushh=true;
 							longProperties(checkid,pushh);
 						}
+						$("#temp select").empty();	
+						$("#contactmail select").empty();	
+						localStorage.removeItem('contactname');
 					}
 				},
 				//si ha ocurrido un error
@@ -2113,11 +2174,25 @@ $(function(){
 			var typeFollow = typeFollow.type;
 			var id = JSON.parse(localStorage.getItem('key'));
 			var parcelid =id.parcelid;
+			var contactname = JSON.parse(localStorage.getItem('contactname'));
+			console.log(contactname);
+			if ((contactname=='') || (contactname==null)){
+				contactname='Default';
+			}else{
+				contactname =contactname.contactname;
+			}
 		}else{
 			var typeFollow = JSON.parse(localStorage.getItem('typefollow'));
 			var typeFollow = typeFollow.typefollow;
 			var pid = JSON.parse(localStorage.getItem('pid'));
 			var parcelid =pid.pid;
+			var contactname = JSON.parse(localStorage.getItem('contactname'));
+			console.log(contactname);
+			if ((contactname=='') || (contactname==null)){
+				contactname='Default';
+			}else{
+				contactname =contactname.contactname;
+			}
 		}
 		
 		tinyMCE.triggerSave(true,true);
@@ -2155,6 +2230,7 @@ $(function(){
 		var imgVal = $('#imageUpload').val(); 
 		
 		$("input#userid").val(userid);
+		$("input#contactname").val(contactname);
 		$("input#type").val('insert');
 		$("input#pid").val(parcelid);	
 		$("input#parcelid").val(parcelid);	
@@ -2169,7 +2245,7 @@ $(function(){
 		
 		$.mobile.loading().show();
 		$.ajax({
-			url: 'http://reifax.com/mreifax/mysetting_tabs/myfollowup_tabs/myfollowhistory/properties_followshedule.php',
+			url: 'http://reifax.com/FollowupReifax/'+folder+'/mysetting_tabs/myfollowup_tabs/myfollowhistory/properties_followshedule.php',
 			type: 'POST',
 			data: formData,
 			cache: false,
@@ -2225,11 +2301,38 @@ $(function(){
 			var typeFollow = typeFollow.type;
 			var id = JSON.parse(localStorage.getItem('key'));
 			var parcelid =id.parcelid;
+			var contactname = JSON.parse(localStorage.getItem('contactname'));
+			console.log(contactname);
+			if ((contactname=='') || (contactname==null)){
+				contactname='Default';
+			}else{
+				contactname =contactname.contactname;
+			}
+		}else if (checkid.length==1){
+			var typeFollow = JSON.parse(localStorage.getItem('typefollow'));
+			var typeFollow = typeFollow.typefollow;
+			var pid = JSON.parse(localStorage.getItem('pid'));
+			var parcelid =pid.pid;
+			//var contactname ='';
+			var contactname = JSON.parse(localStorage.getItem('contactname'));
+			console.log(contactname);
+			if ((contactname=='') || (contactname==null)){
+				contactname='Default';
+			}else{
+				contactname =contactname.contactname;
+			}
 		}else{
 			var typeFollow = JSON.parse(localStorage.getItem('typefollow'));
 			var typeFollow = typeFollow.typefollow;
 			var pid = JSON.parse(localStorage.getItem('pid'));
 			var parcelid =pid.pid;
+			var contactname = JSON.parse(localStorage.getItem('contactname'));
+			console.log(contactname);
+			if ((contactname=='') || (contactname==null)){
+				contactname='Default';
+			}else{
+				contactname =contactname.contactname;
+			}
 		}
 		
 		tinyMCE.triggerSave(true,true);
@@ -2239,6 +2342,7 @@ $(function(){
 		
 		var imgVal = $('#imageUpload').val(); 
 		$("input#userid").val(userid);
+		$("input#contactname").val(contactname);
 		$("input#pid").val(parcelid);
 				
 		$("input#typeFollow").val(typeFollow);
@@ -2246,7 +2350,7 @@ $(function(){
 		var formData 		= new FormData($("#envioEmail")[0]);
 		$.mobile.loading().show();
 		$.ajax({
-			url: 'http://reifax.com/mreifax/mysetting_tabs/myfollowup_tabs/properties_followsendfax.php',
+			url: 'http://reifax.com/FollowupReifax/'+folder+'/mysetting_tabs/myfollowup_tabs/properties_followsendfax.php',
 			type: 'POST',
 			data: formData,
 			cache: false,
@@ -2265,9 +2369,9 @@ $(function(){
 				});
 				$.mobile.changePage('#followingHtml');
 				if (checkid!=''){
-							pushh=true;
-							longProperties(checkid,pushh);
-						}
+					pushh=true;
+					longProperties(checkid,pushh);
+				}
 			},
 			//si ha ocurrido un error
 			error: function(){
@@ -3749,43 +3853,43 @@ function pdf(){
 		transform: scale(1.25);
 	}
 	.box {			
-		background-image: url('http://reifax.com/FollowupReifax/img/menu-w.png');
+		background-image: url('img/menu-w.png');
 		background-repeat: no-repeat;
 		background-position: center center;
 		background-size: 20px 20px;			
 	} 
 	.box2 {			
-		background-image: url('http://reifax.com/FollowupReifax/img/delete-w.png');
+		background-image: url('img/delete-w.png');
 		background-repeat: no-repeat;
 		background-position: center center;
 		background-size: 20px 20px;			
 	} 
 	.box3 {			
-		background-image: url('http://reifax.com/FollowupReifax/img/aceptar-w.png');
+		background-image: url('img/aceptar-w.png');
 		background-repeat: no-repeat;
 		background-position: center center;
 		background-size: 20px 20px;			
 	} 
 	.box4 {			
-		background-image: url('http://reifax.com/FollowupReifax/img/read_email-48.png');
+		background-image: url('img/read_email-48.png');
 		background-repeat: no-repeat;
 		background-position: center center;
 		background-size: 20px 20px;			
 	} 
 	.box5 {			
-		background-image: url('http://reifax.com/FollowupReifax/img/readed_email-48.png');
+		background-image: url('img/readed_email-48.png');
 		background-repeat: no-repeat;
 		background-position: center center;
 		background-size: 20px 20px;			
 	} 
 	.box6 {			
-		background-image: url('http://reifax.com/FollowupReifax/img/edit-32.png');
+		background-image: url('img/edit-32.png');
 		background-repeat: no-repeat;
 		background-position: center center;
 		background-size: 20px 20px;			
 	} 
 	.box7 {			
-		background-image: url('http://reifax.com/FollowupReifax/img/completed-48.png');
+		background-image: url('img/completed-48.png');
 		background-repeat: no-repeat;
 		background-position: center center;
 		background-size: 20px 20px;			
@@ -4035,7 +4139,7 @@ function pdf(){
 				<div class="account-wall">
 					<!--img class="profile-img" src="http://reifax.com/FollowupReifax/resources/image/logo_login.jpg" alt=""-->
 					<div style="text-align:center;">
-					<img  style="width:250px;" src="http://reifax.com/FollowupReifax/resources/image/logo_login.jpg" alt="">
+					<img  style="width:250px;" src="resources/image/logo_login.jpg" alt="">
 					</div>
 					<form id="loginForm" class="form-signin">
 						<input id="userLogin" type="email" class="form-control" placeholder="Email" required autofocus>
@@ -4117,7 +4221,7 @@ function pdf(){
 		<div style="width: 100%;margin-top: -40px;text-align: right;">
 			<!--a id="filtro" style="height: 30px;background-image: url('img/filter.jpg');background-repeat:no-repeat; background-size: 25px 25px; margin-left:5px;margin-top:2px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child btn btn-primary btn-lg" data-excecute="filter" data-toggle="modal" role="button"  data-theme="b" href="#filter"></a>
 			<a id="filtro_remove" style="height: 30px;background-image: url('img/filter-remove.png');background-repeat:no-repeat; background-size: 25px 25px; margin-left:5px;margin-top:2px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child" data-excecute="filter" data-theme="b" href="#"></a-->
-			<a style="height: 30px;margin-right:10px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child" data-excecute="weekly" data-theme="b" href="#menuSecunFollow"></a>
+			<a style="height: 30px;margin-right:5px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child" data-excecute="weekly" data-theme="b" href="#menuSecunFollow"></a>
 			
 		</div>
 		<!--a style="height: 30px;background-image: url('img/search-36.png');background-repeat:no-repeat; background-size: 30px 30px; background-position:center center;" class="ui-btn ui-btn-icon-notext excecute ui-first-child ui-last-child search" data-excecute="weekly" data-theme="b" href="javascript:void(0);"></a-->
@@ -6592,8 +6696,8 @@ function pdf(){
 		<a style="background:#E98C40; border:1px solid #E98C40; background-color:#E98C40;background-image: url('resources/img/Save2.png');background-repeat:no-repeat;margin-left:-11px;background-position:center center;left:10%;" class="ui-btn ui-icon-save ui-btn-icon-notext excecute ui-first-child ui-last-child" data-excecute="main-Menu" data-theme="b" href="#save">No text</a-->		
 		<div style="text-align:center;"><img src="resources/image/email-followup.png" width="120" height="40"></div>
 		<div style="width: 100%;margin-top: -40px;text-align: right;">
-		<a id="addEOutbox" style="margin-right:10px;height:35px;width:35px;margin-bottom:5px;background-image: url('img/add-email.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;margin-top:2px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child btn btn-primary" data-excecute="editar" role="button"  data-theme="b" href="#pagAddComposeEOHtml"></a>
-		<a style="height: 30px;margin-right:10px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child" data-excecute="contacts" data-theme="b" href="#menuEmailOutbox"></a>
+		<a id="addEOutbox" style="height:35px;width:35px;margin-bottom:5px;background-image: url('img/add-email.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;margin-top:2px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child btn btn-primary" data-excecute="editar" role="button"  data-theme="b" href="#pagAddComposeEOHtml"></a>
+		<a style="height: 30px;margin-right:5px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child" data-excecute="contacts" data-theme="b" href="#menuEmailOutbox"></a>
 		</div>
 		
 		<div style="background: #8ab420;border: #8ab420;margin-top:40px;" data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false" id="header_emailOutbox">				
@@ -6661,7 +6765,8 @@ function pdf(){
 		<!--a style="background:#E98C40; border:1px solid #E98C40; background-color:#E98C40;background-image: url('resources/img/Save2.png');background-repeat:no-repeat;margin-left:-11px;background-position:center center;left:10%;" class="ui-btn ui-icon-save ui-btn-icon-notext excecute ui-first-child ui-last-child" data-excecute="main-Menu" data-theme="b" href="#save">No text</a-->		
 		<div style="text-align:center;"><img src="resources/image/task-follow.png" width="120" height="40"></div>
 		<div style="width: 100%;margin-top: -40px;text-align: right;">
-			<a style="margin-right:10px;height:35px;width:35px;margin-bottom:5px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;margin-top:6px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child menu" data-excecute="weekly" data-theme="b" href="#menuTask"></a>
+			<!--a style="margin-right:5px;height:35px;width:35px;margin-bottom:5px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;margin-top:6px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child menu" data-excecute="weekly" data-theme="b" href="#menuTask"></a-->
+			<a style="height: 30px;margin-right:5px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child" data-excecute="weekly" data-theme="b" href="#menuTask"></a>
 		</div>
 		
 		<div style="background: #8ab420;border: #8ab420;margin-top:40px;" data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false" id="header_pending">				
@@ -6725,7 +6830,8 @@ function pdf(){
 		<!--a style="background:#E98C40; border:1px solid #E98C40; background-color:#E98C40;background-image: url('resources/img/Save2.png');background-repeat:no-repeat;margin-left:-11px;background-position:center center;left:10%;" class="ui-btn ui-icon-save ui-btn-icon-notext excecute ui-first-child ui-last-child" data-excecute="main-Menu" data-theme="b" href="#save">No text</a-->		
 		<div style="text-align:center;"><img src="resources/image/task-follow.png" width="120" height="40"></div>
 		<div style="width: 100%;margin-top: -40px;text-align: right;">
-			<a style="margin-right:10px;height:35px;width:35px;margin-bottom:5px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;margin-top:6px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child menu" data-excecute="weekly" data-theme="b" href="#menuTaskCompleted"></a>
+			<!--a style="margin-right:5px;height:35px;width:35px;margin-bottom:5px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;margin-top:6px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child menu" data-excecute="weekly" data-theme="b" href="#menuTaskCompleted"></a-->
+			<a style="height: 30px;margin-right:5px;background-image: url('img/menu-36.png');background-repeat:no-repeat; background-size: 30px 30px; margin-left:5px;background-position:center center;" class="ui-btn excecute ui-first-child ui-last-child" data-excecute="weekly" data-theme="b" href="#menuTaskCompleted"></a>
 		</div>
 	
 		<div style="background: #8ab420;border: #8ab420;margin-top:40px;" data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false" id="header_completed">				
@@ -7704,7 +7810,7 @@ function pdf(){
 	
 	<div data-role="content" >	
 
-		<div style="background:#fff;" id="historial">
+		<div style="background:#fff;margin-top:85px;" id="historial">
 			
 			<ul style="list-style: none;margin-left:-40px;" class="page_history2">
 			
@@ -7772,7 +7878,7 @@ function pdf(){
 	
 	<div data-role="content" >	
 		
-		<div style="background:#fff;" id="schedule">
+		<div style="background:#fff;margin-top:80px;" id="schedule">
 			<ul style="list-style: none;margin-left:-40px;" class="page_schedule">
 			
 			</ul>
@@ -7827,7 +7933,7 @@ function pdf(){
 					<body></body>
 				</html>
 			</iframe-->
-		<div style="background:#fff;" id="correofollow">
+		<div style="background:#fff;margin-top:80px;" id="correofollow">
 			<ul style="list-style: none;margin-left:-40px;" class="page_correo">
 			
 			</ul>
@@ -9137,7 +9243,7 @@ function pdf(){
 						To
 					</div>
 					<div id="contactmail" style="padding-left:0px;padding-right:0px;margin-left:15px;" class="col-xs-8 col-sm-10">
-						<select id="contactemail" name="contactemail"  class="span4"></select>
+						<select id="contactemail" name="contactemail" onchange="combocontactemail();" class="span4"></select>
 					</div>
 				</div>
 				<div class="row">
@@ -9158,6 +9264,7 @@ function pdf(){
 				</div>
 				
 				<input type='hidden' name='userid' id='userid'>
+				<input type='hidden' name='contactname' id='contactname'>
 				<input type='hidden' name='pid' id='pid'>
 				<input type='hidden' name='parcelid' id='parcelid'>
 				<input type='hidden' name='typeFollow' id='typeFollow'>
@@ -9228,7 +9335,7 @@ function pdf(){
 						To
 					</div>
 					<div id="contacttexto" style="padding-left:0px;padding-right:0px;margin-left:20px;" class="col-xs-8 col-sm-10">
-						<select id="contactsms" name="contactsms"  class="span4"></select>
+						<select id="contactsms" name="contactsms" onchange="combocontactsms();"  class="span4"></select>
 					</div>
 				</div>
 				<div style="margin-bottom: 10px;" class="row">
@@ -9295,7 +9402,7 @@ function pdf(){
 						To
 					</div> 
 					<div id="contactfaxx" style="padding-left:0px;padding-right:0px;margin-left:15px;" class="col-xs-8 col-sm-10">
-						<select id="contactfax" name="contactfax"  class="span4"></select>
+						<select id="contactfax" name="contactfax" onchange="combocontactfax();" class="span4"></select>
 					</div>
 				</div>			
 				<div style="margin-bottom: 10px;" class="row">
@@ -9306,6 +9413,7 @@ function pdf(){
 			
 			
 				<input type='hidden' name='userid' id='userid'>
+				<input type='hidden' name='contactname' id='contactname'>
 				<input type='hidden' name='pid' id='pid'>
 				<input type='hidden' name='parcelid' id='parcelid'>
 				<input type='hidden' name='typeFollow' id='typeFollow'>
@@ -10507,11 +10615,11 @@ function pdf(){
 
 </div><!--FIN FORM SEND CONTRACT-->
  
- <script src="http://reifax.com/FollowupReifax/resources/js/jquery.auto-complete.js"></script>
+ <script src="resources/js/jquery.auto-complete.js"></script>
 
-<script type="text/javascript" src="http://reifax.com/FollowupReifax/resources/datetime/timedate1/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="http://reifax.com/FollowupReifax/resources/datetime/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-<script type="text/javascript" src="http://reifax.com/FollowupReifax/resources/datetime/js/locales/bootstrap-datetimepicker.es.js" charset="UTF-8"></script>
+<script type="text/javascript" src="resources/datetime/timedate1/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/datetime/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="resources/datetime/js/locales/bootstrap-datetimepicker.es.js" charset="UTF-8"></script>
 <script type="text/javascript">
     $('#ExhourEditPend').datetimepicker({
 		 language:  'es',
