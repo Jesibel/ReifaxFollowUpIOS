@@ -42,7 +42,7 @@
 	<link href="resources/datetime/timedate1/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link href="bootstrap/css/bootstrap-modal.css" rel="stylesheet" />
 	
-	 <link rel="stylesheet" href="resources/css/jquery.auto-complete.css">
+	<link rel="stylesheet" href="resources/css/jquery.auto-complete.css">
 	
 	<link href="resources/datetime/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 	
@@ -63,9 +63,6 @@
     <script src="http://mobipick.sustainablepace.net/external/xdate.i18n.js"></script>        
     <script src="http://mobipick.sustainablepace.net/js/mobipick.js"></script>
 	
-	<!--script src="resources/build/js/intlTelInput.js"></script>
-	<script src="resources/build/css/intlTelInput.css"></script-->
-	
 	<script src="resources/js/accounting.js"></script>
 	<script src="resources/js/moment.js"></script>
 	
@@ -73,28 +70,140 @@
 	<script src="resources/js/tinymce/js/tinymce/tinymce.min.js"></script>
 	
 	
-<script src="resources/js/bootbox.js"></script>
+	<script src="resources/js/bootbox.js"></script>
 	
 	<script type="text/javascript">
 	var activePage;
-	var device=false;
+	
+	var pushNotification;
+	
 	function _onDeviceReady (){	
 		
+		//alert('dentro onDevice');
 		detectInternet();
 		
 		activePage = $.mobile.activePage.attr('id');
-		MobileAccessibility.usePreferredTextZoom(false);
+		//MobileAccessibility.usePreferredTextZoom(false);
 		//alert(WURFL.form_factor);
 		if (WURFL.form_factor == "Tablet") {
 			//alert('es una tablet');
-			device=true;
+			
 			window.plugins.orientationchanger.lockOrientation('landscape');
 			 //setTimeout(function () {navigator.splashscreen.show()},1000);
 		}else{
-			device=false;
+			//alert('es una phone');
 			window.plugins.orientationchanger.lockOrientation('portrait');
 		}
+		//alert(device.platform);
 		
+		pushNotification = window.plugins.pushNotification;
+		
+		//alert(device.platform);
+		
+		if ( device.platform == 'android' || device.platform == 'Android'){
+			//alert('dentro if');
+			if(window.localStorage["userid"] != undefined) {
+				pushNotification.register(
+					function(token){
+						console.log('toke:'+token);
+					},
+					function (error){
+						alert(error)
+					},
+				{
+					"senderID":"383643887005",
+					"ecb":"onNotification"
+				});
+			}
+		} 
+		
+		
+		
+	}
+	
+	function onNotification(e) {
+		
+		//alert(e.event);
+		switch( e.event )
+			{
+			case 'registered':
+				if ( e.regid.length > 0 )
+				{
+					//$("#app-status-ul").append('<li>REGISTERED -> REGID:' + e.regid + "</li>");
+					// Your GCM push server needs to know the regID before it can push to this device
+					// here is where you might want to send it the regID for later use.
+						var userid = JSON.parse(localStorage.getItem('userid'));
+						console.log(userid);
+						userid =userid.userid;
+						/*addDeviceId(e.regid,userid);
+						console.log("regID = " + e.regid);
+						console.log("userID = " + userid);*/
+						//alert(e.regid);
+						var device = e.regid;
+						var object = { 'device' : device };
+						localStorage.setItem('device', JSON.stringify(object));
+					
+						$.ajax({
+							url: 'http://reifax.com/FollowupReifax/'+folder+'/mysetting_tabs/myfollowup_tabs/properties_followup.php',  
+							type: 'POST',
+							data: { 
+								'userid': userid,
+								'deviceid':e.regid,
+								'type':'deviceID'
+							}
+						}).done(function (data){
+							//alert(data);
+		
+						});
+					
+					//addDeviceId(e.regid,userid);
+					console.log("regID = " + e.regid);
+					console.log("userID = " + userid);
+				}
+			break;
+
+			case 'message':
+				// if this flag is set, this notification happened while we were in the foreground.
+				// you might want to play a sound to get the user's attention, throw up a dialog, etc.
+				if ( e.foreground )
+				{
+					//$("#app-status-ul").append('<li>--INLINE NOTIFICATION--' + '</li>');
+
+					// on Android soundname is outside the payload.
+					// On Amazon FireOS all custom attributes are contained within payload
+					var soundfile = e.soundname || e.payload.sound;
+					// if the notification contains a soundname, play it.
+					var my_media = new Media("/android_asset/www/"+ soundfile);
+					my_media.play();
+				}
+				else
+				{  // otherwise we were launched because the user touched a notification in the notification tray.
+					if ( e.coldstart )
+					{
+						//$("#app-status-ul").append('<li>--COLDSTART NOTIFICATION--' + '</li>');
+					}
+					else
+					{
+						//$("#app-status-ul").append('<li>--BACKGROUND NOTIFICATION--' + '</li>');
+					}
+				}
+
+			   //$("#app-status-ul").append('<li>MESSAGE -> MSG: ' + e.payload.message + '</li>');
+				   //Only works for GCM
+			   //$("#app-status-ul").append('<li>MESSAGE -> MSGCNT: ' + e.payload.msgcnt + '</li>');
+			   //Only works on Amazon Fire OS
+			   $status.append('<li>MESSAGE -> TIME: ' + e.payload.timeStamp + '</li>');
+			break;
+
+			case 'error':
+				alert('ERROR -> MSG:' + e.msg + '');
+				//$("#app-status-ul").append('<li>ERROR -> MSG:' + e.msg + '</li>');
+			break;
+
+			default:
+				//$("#app-status-ul").append('<li>EVENT -> Unknown, an event was received and we do not know what it is</li>');
+			break;
+		  }
 	}
 
 	function showConfirm() {
@@ -169,14 +278,29 @@ $(document).ready(function(){
 	
 	
 	$('#next').bind('click',funciones.proccess)
-		$('#go').bind('click',funciones.findUser);
-		$('input[name=txtEmail]').bind('focus',funciones.initAll);
-		correcto=true;
-
+	$('#go').bind('click',funciones.findUser);
+	$('input[name=txtEmail]').bind('focus',funciones.initAll);
+	correcto=true;
 	
-	//document.getElementById('templa').style.display = "none";
-	//document.getElementById('templaSms').style.display = "none";
-	//document.getElementById('templaFAX').style.display = "none";
+	//check de las notificaciones
+	var settingNoti = JSON.parse(localStorage.getItem('settingNoti'));
+	console.log(settingNoti);
+	if ((settingNoti=='') || (settingNoti==null)){
+		settingNoti='';
+	}else{
+		settingNoti =settingNoti.settingNoti;
+	}
+	
+	if(settingNoti==0){
+		var setting=true;
+		
+	}else{
+		var setting=false;
+		
+	}
+	$('#chk_notif').prop('checked', setting );
+	
+	
 	document.getElementById('between').style.display = "none";
 	document.getElementById('between2').style.display = "none";
 	document.getElementById('betweenMail').style.display = "none";
@@ -195,15 +319,6 @@ $(document).ready(function(){
 	document.getElementById("sContact").style.display = "none";
 	//document.getElementById("sProperty").style.display = "none";
 	document.getElementById("searchLisContact").style.display = "none";
-	/*document.getElementById("out").style.display = "none";
-	document.getElementById("comp").style.display = "none";
-	document.getElementById("email-tablet2").style.display = "none";
-	document.getElementById("email-princ").style.display = "none";
-	document.getElementById("task-princ").style.display = "none";
-	document.getElementById("contact-princ").style.display = "none";
-	document.getElementById("header_email").style.display = "none";
-	document.getElementById("header_task").style.display = "none";*/
-	
 	
 	
 	$('#folldate').change(function(){
@@ -271,6 +386,25 @@ $(document).ready(function(){
 			document.getElementById('betweenMailO2').style.display = "none";
 		}
 	});
+	
+	//check notificacion change
+	$('#chk_notif').on('change',function(){
+		var YN = ( $(this).prop("checked")?'Y':'N' );
+		//alert(YN);
+		if(YN=='Y'){
+			var state=0;
+		}else{
+			var state=1;
+		}
+		//alert(state);
+		var settingNoti = state;
+		var object = { 'settingNoti' : settingNoti };
+		localStorage.setItem('settingNoti', JSON.stringify(object));
+		notification();
+		//app.settings().set('notif',  YN );
+		//app.enabled_noty(YN);
+    });
+	
 	
 	//FILTER PROPERTIES
 	$("#filtro,#filtro2").on('click', function () {
@@ -987,7 +1121,7 @@ $(document).ready(function(){
 });
 </script>
 <script type="text/javascript">
-	var folder='productive';
+	var folder='developer';
 	var position=0;
 	var posi=0;
 	var pos=0;
@@ -1961,6 +2095,8 @@ $(function(){
 					}
 					$("#temp select").empty();	
 					$("#contactmail select").empty();	
+					$("#edate").val();			
+					$("#ehour").val();
 					localStorage.removeItem('contactname');
 				},
 				//si ha ocurrido un error
@@ -2272,7 +2408,9 @@ $(function(){
 					}
 					$("#tempFax select").empty();	
 					$("#contactfaxx select").empty();	
-					$("#contactmail select").empty();	
+					$("#contactmail select").empty();
+					$("#edate").val();			
+					$("#ehour").val("");					
 					localStorage.removeItem('contactname');
 				}
 			},
@@ -3088,7 +3226,7 @@ $(document).on("pagebeforeshow","#contactsHtml",function(){
 		filter= $('#searchConta').val();
 		/*$ul.html( "" );
 		$ul.html( "<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
-        $ul.listview( "refresh" );*/
+        $ul.listview( "refresh" );*/
 		listadoContacts(start,settings.limit,filter);
 	});
 	
@@ -3348,7 +3486,7 @@ $(document).on("pagebeforeshow","#listadoAllContacts",function(){
 		filter= $('#searchListContact').val();
 		/*$ul.html( "" );
 		$ul.html( "<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
-        $ul.listview( "refresh" );*/
+        $ul.listview( "refresh" );*/
 		listadoAllContacts(start,settings.limit,filter);
 	});
 
@@ -3548,36 +3686,14 @@ function processLogin(){
 			var userid= obj.userid;
 			var object = { 'userid' : userid };
 			localStorage.setItem('userid', JSON.stringify(object));
-			$.mobile.changePage("#followingHtml");		
+			$.mobile.changePage("#followingHtml");
+			document.addEventListener("deviceReady",_onDeviceReady, false);
 		},
 		
 		error: function(jqXHR, textStatus, ex) {
 			alert(textStatus + "," + ex + "," + jqXHR.responseText);
 		}
 	});
-		/*}).done(function (data){					
-			//alert(data);					
-			var obj = JSON.parse(data);
-			console.log(obj.success);
-			if(obj.success) {			
-					//alert('Welcome Reifax Follow');		
-					/*bootbox.alert({
-						title: 'Reifax Follow Up',
-						message: 'Welcome Reifax Follow'
-					});*/
-		/*			var userid= obj.userid;
-					var object = { 'userid' : userid };
-					localStorage.setItem('userid', JSON.stringify(object));
-					//$.mobile.changePage('#followingHtml');
-					checkPreAuth();
-					
-			}else{
-				alert('else obj');
-				$.mobile.changePage('#loginHtml');
-			}			
-			
-								
-		});*/
 		
 }
 
@@ -4125,9 +4241,14 @@ function pdf(){
 	.progress-bar.animate {
 		width: 100%;
 	}
-	
-	.ui-header-fixed{
-		padding-top: 5px !important;
+	.ui-page-theme-a .ui-flipswitch-active{
+		background-color: #5393c5 !important;
+	}
+	.ui-field-contain .ui-flipswitch.ui-flipswitch-active, .ui-popup .ui-field-contain .ui-flipswitch.ui-flipswitch-active{
+		height:28px;
+	}
+	html .ui-field-contain>label+.ui-flipswitch, html .ui-popup .ui-field-contain>label+.ui-flipswitch{
+		height:28px;
 	}
 </style>
 </head>
@@ -4296,6 +4417,7 @@ function pdf(){
 			<a class="closeMenu" style="display:none;"   href="#" data-rel="close">Close</a>
 			<li class="margen"><a class="filter"        id="filtro"        href="#filter" data-toggle="modal" role="button" class="btn btn-primary btn-lg">&nbsp;&nbsp;&nbsp;&nbsp;Filter</a></li>
 			<li class="margen"><a class="filterRemove"  id="filtro_remove" href="#remove" >&nbsp;&nbsp;&nbsp;&nbsp;Remove Filter</a></li>	
+			<li class="margen"><a class="setting"  id="setting" href="#settingHtml" >&nbsp;&nbsp;&nbsp;&nbsp;Setting</a></li>	
 			<!--li><a class="deleteFollow"  id="deleteFo"       href="#delete" >&nbsp;&nbsp;&nbsp;&nbsp;Delete</a></li>			 
 			<li><a class="sendContract"  id="sendContract"   href="#sendContracts" >&nbsp;&nbsp;&nbsp;&nbsp;Send Contracts</a></li>
 			<li><a class="sendEmail"     id="sendEmail"      href="#formEmail" role="button" class="btn btn-primary btn-lg" data-toggle="modal" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Send Email</a></li>
@@ -4308,6 +4430,53 @@ function pdf(){
 	</div>
 	<!--FIN MENU-->
 
+</div>
+
+<div data-role="page" id="settingHtml">
+	<!--HEADER-->
+	<div style="background: #8ab420;border: #8ab420;" data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">				
+		<a style="height:30px;width:30px;background-image: url('img/back-w2.png');background-repeat:no-repeat;margin-left:-10px;margin-top:3px;background-position:center center;" class="ui-btn ui-first-child ui-last-child showPrevPage" data-excecute="main-Menu" data-theme="b" href="#" onclick="goBack();" ></a>
+		<div style="text-align:left;margin-left:15px;margin-top:3px;"><img src="resources/image/casa_rf-40.png" width="30" height="30"></div>
+		<div style="text-align:center;margin-top:-30px;"><img src="resources/image/settings.png" width="120" height="40"></div>
+	</div>
+	<!--FIN HEADER-->
+	
+	<!--content-->
+	<div data-role="content">
+		
+		<div style="margin-left: 1px;" class="row formC" id="formSetting">	  
+			<div style="margin-bottom: 10px;" class="row">
+				<div style="font-size:20px;padding-left: 25px;padding-top: 5px;border-bottom:1px solid #ccc;margin-bottom: 10px;" class="col-xs-12 col-sm-4">
+					Notification
+				</div>
+				
+			</div>
+			<div style="margin-bottom: 10px;" class="row">
+				<div style="padding-left: 25px;padding-top: 5px;" class="col-xs-7 col-sm-4">
+					<div style="font-weight: bold;">Notification</div>
+					<div>Enable / Disable Notification</div>
+				</div>
+				
+				<div  id="noti" class="col-xs-3 col-sm-6">
+					<!--input id="notificarion" type="checkbox" class="span4"/-->
+					<!--div class="make-switch">
+						<input type="checkbox" checked="true" class="Notif" />
+					</div-->
+					<div data-role="fieldcontain">
+						<label for="chk_notif"></label>
+						<input type="checkbox" id="chk_notif" data-role="flipswitch" data-mini="true">
+					</div>
+				</div>
+			</div>	
+			<hr>
+			
+		</div>
+		<br>
+		<br>
+		<br>
+	</div>
+	<!--content-->
+	
 </div>
 
 
@@ -10705,16 +10874,23 @@ function pdf(){
 		 MobileAccessibility.usePreferredTextZoom(false);
 	});
 </script-->
+<script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript">
-    document.addEventListener("deviceReady",_onDeviceReady, false);
+	if(window.localStorage["userid"] != undefined) {
 	
-	document.addEventListener("backbutton", function(){
+		document.addEventListener("deviceReady",_onDeviceReady, false);
+	
+		document.addEventListener("backbutton", function(){
 			
 		if(activePage=='followingHtml'){
 			navigator.app.exitApp();//se sale de la aplicacion
 		}
 				
-	}, false);
+		}, false);
+		
+	}else{
+		document.addEventListener("deviceReady",_onDeviceReady, false);
+	}
 </script>
 </body>
   
