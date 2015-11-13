@@ -120,9 +120,26 @@
 			// pushNotification.register(tokenHandler, errorHandler, {"badge":"true","sound":"true","alert":"true","ecb":"onNotificationAPN"});    // required!			
 			pushNotification.register(
 				function(token){//SALVAR DEVICEID
-				  $.post(app.URL_API, {'method': "token.device", 'so':'IOS', 'dt':token}, function() {
-					//PROCESAR RESULTADO AJAX
-				  },"json");
+					var userid = JSON.parse(localStorage.getItem('userid'));
+					userid =userid.userid;
+					
+					$.ajax({
+							url: 'http://reifax.com/FollowupReifax/'+folder+'/mysetting_tabs/myfollowup_tabs/properties_followup.php',  
+							type: 'POST',
+							data: { 
+								'userid': userid,
+								'deviceid':token,
+								'platform':'IOS',
+								'type':'deviceID'
+							}
+						}).done(function (data){
+							//alert(data);
+		
+						});
+					
+					/*$.post(app.URL_API, {'method': "token.device", 'so':'IOS', 'dt':token}, function() {
+						//PROCESAR RESULTADO AJAX
+					 },"json");*/
 				},
 				function(error){
 				 alert(error);
@@ -186,6 +203,7 @@
 							data: { 
 								'userid': userid,
 								'deviceid':e.regid,
+								'platform':'Android',
 								'type':'deviceID'
 							}
 						}).done(function (data){

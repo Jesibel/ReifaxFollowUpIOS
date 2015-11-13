@@ -44,7 +44,9 @@
   <preference name="SplashScreen" value="splash" />
   <preference name="SplashScreenDelay" value="10000" /> <!-- ios: if set to false, the spinner won't appear on the splash screen during app loading -->
   
+   <preference name="DisallowOverscroll" value="true"/>
   
+  <preference name="stay-in-webview" value="true" /> 
  
   <!-- Define app icon for each platform. -->
   <icon src="resources/image/reifax_FOLLOW_UP_logo-120.png"/>
