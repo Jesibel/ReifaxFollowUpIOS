@@ -115,12 +115,49 @@
 					"ecb":"onNotification"
 				});
 			}
-		} 
+		}else{
+            //$("#app-status-ul").append('<li>registering iOS</li>');
+			// pushNotification.register(tokenHandler, errorHandler, {"badge":"true","sound":"true","alert":"true","ecb":"onNotificationAPN"});    // required!			
+			pushNotification.register(
+				function(token){//SALVAR DEVICEID
+				  $.post(app.URL_API, {'method': "token.device", 'so':'IOS', 'dt':token}, function() {
+					//PROCESAR RESULTADO AJAX
+				  },"json");
+				},
+				function(error){
+				 alert(error);
+				},
+				{
+				 "badge":"true",
+				 "sound":"true",
+				 "alert":"true",
+				 "ecb":"onNotificationAPN"
+				}
+			);
+        } 
 		
 		
 		
 	}
 	
+	// handle APNS notifications for iOS
+	function onNotificationAPN(e) {
+        if (e.alert) {
+             //$("#app-status-ul").append('<li>push-notification: ' + e.alert + '</li>');
+             navigator.notification.alert(e.alert);
+        }
+
+        if (e.sound) {
+            var snd = new Media(e.sound);
+            snd.play();
+        }
+
+        if (e.badge) {
+            pushNotification.setApplicationIconBadgeNumber(successHandler, e.badge);
+        }
+    }
+	
+	 // handle GCM notifications for Android
 	function onNotification(e) {
 		
 		//alert(e.event);
