@@ -80,7 +80,7 @@
 	function _onDeviceReady (){	
 		
 		//alert('dentro onDevice');
-		detectInternet();
+		//---detectInternet();
 		
 		activePage = $.mobile.activePage.attr('id');
 		//MobileAccessibility.usePreferredTextZoom(false);
@@ -301,6 +301,7 @@
 		
 		
 		function detectInternet(){
+		//ESTO PA QUE ES...
 				
 			//var url='http://reifax.com';
 			
@@ -318,7 +319,7 @@
 					 //alert(request.status);
 					if(request.status==0){
 						//alert("Please connect to the internet");
-						showConfirm();
+						showConfirm(); 
 					}
 				}
 			});
@@ -3756,7 +3757,6 @@ function processLogin(){
 			var object = { 'userid' : userid };
 			localStorage.setItem('userid', JSON.stringify(object));
 			$.mobile.changePage("#followingHtml");
-			document.addEventListener("deviceReady",_onDeviceReady, false);
 		},
 		
 		error: function(jqXHR, textStatus, ex) {
@@ -10945,20 +10945,20 @@ function pdf(){
 </script-->
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript">
-	if(window.localStorage["userid"] != undefined) {
-		alert('device');
-		document.addEventListener("deviceReady",_onDeviceReady, false);
 	
-		document.addEventListener("backbutton", function(){
-			
-		if(activePage=='followingHtml'){
-			navigator.app.exitApp();//se sale de la aplicacion
-		}
-				
-		}, false);
+	document.addEventListener("deviceReady",_onDeviceReady, false);
+	
+	document.addEventListener("backbutton", function(){
 		
-	}else{
-		document.addEventListener("deviceReady",_onDeviceReady, false);
+	if(activePage=='followingHtml'){
+		navigator.app.exitApp();//se sale de la aplicacion
+	}
+			
+	}, false);
+		
+		
+	if(window.localStorage["userid"] != undefined) {
+		alert('device');	
 	}
 </script>
 </body>
