@@ -94,30 +94,22 @@
 			//alert('es una phone');
 			window.plugins.orientationchanger.lockOrientation('portrait');
 		}
+		
 		//alert(device.platform);
 		
 		pushNotification = window.plugins.pushNotification;
 		
-		alert(device.platform);
+		//alert(device.platform);
 		
-		if ( device.platform == 'android' || device.platform == 'Android'){
-			//alert('dentro if');
-			if(window.localStorage["userid"] != undefined) {
-				pushNotification.register(
-					function(token){
-						console.log('toke:'+token);
-					},
-					function (error){
-						alert(error)
-					},
-				{
-					"senderID":"383643887005",
-					"ecb":"onNotification"
-				});
-			}
-		}else{
+		var platforma='';
+		
+		platforma=isIphone();
+		alert(platforma);
+		
+		if (platforma==true){
             //$("#app-status-ul").append('<li>registering iOS</li>');
 			// pushNotification.register(tokenHandler, errorHandler, {"badge":"true","sound":"true","alert":"true","ecb":"onNotificationAPN"});    // required!			
+			alert('platform IOS');
 			pushNotification.register(
 				function(token){//SALVAR DEVICEID
 					var userid = JSON.parse(localStorage.getItem('userid'));
@@ -153,10 +145,30 @@
 				 "ecb":"onNotificationAPN"
 				}
 			);
-        } 
+        }else if (platforma==false){
+			//alert('dentro if');
+			if(window.localStorage["userid"] != undefined) {
+				pushNotification.register(
+					function(token){
+						console.log('toke:'+token);
+					},
+					function (error){
+						alert(error)
+					},
+				{
+					"senderID":"383643887005",
+					"ecb":"onNotification"
+				});
+			}
+		} 
 		
 		
 		
+	}
+	
+	function  isIphone(){
+		var iOS7UserAgentStr = /(iPad|iPhone|iPod);/i;
+		return (navigator.userAgent.match(iOS7UserAgentStr));
 	}
 	
 	// handle APNS notifications for iOS
