@@ -98,7 +98,7 @@
 		
 		pushNotification = window.plugins.pushNotification;
 		
-		//alert(device.platform);
+		alert(device.platform);
 		
 		if ( device.platform == 'android' || device.platform == 'Android'){
 			//alert('dentro if');
@@ -122,6 +122,8 @@
 				function(token){//SALVAR DEVICEID
 					var userid = JSON.parse(localStorage.getItem('userid'));
 					userid =userid.userid;
+					alert(userid);
+					alert(token);
 					
 					$.ajax({
 							url: 'http://reifax.com/FollowupReifax/'+folder+'/mysetting_tabs/myfollowup_tabs/properties_followup.php',  
