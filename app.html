@@ -87,15 +87,14 @@
 		//alert(WURFL.form_factor);
 		alert('antes del IF WURFL');
 		if (WURFL.form_factor == "Tablet") {
-			//alert('es una tablet');
-			
+			alert('landscape: A');
 			window.plugins.orientationchanger.lockOrientation('landscape');
-			alert('landscape');
+			alert('landscape: B');
 			 //setTimeout(function () {navigator.splashscreen.show()},1000);
 		}else{
-			//alert('es una phone');
+			alert('portrait:A');
 			window.plugins.orientationchanger.lockOrientation('portrait');
-			alert('portrait');
+			alert('portrait:N');
 		}
 		
 		//alert(device.platform);
