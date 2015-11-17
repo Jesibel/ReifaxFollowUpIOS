@@ -107,18 +107,18 @@
 		var platforma='';
 		
 		platforma=isIphone();
-		alert(platforma);
+		//alert(platforma);
 		
 		if (platforma==true){
             //$("#app-status-ul").append('<li>registering iOS</li>');
 			// pushNotification.register(tokenHandler, errorHandler, {"badge":"true","sound":"true","alert":"true","ecb":"onNotificationAPN"});    // required!			
-			alert('platform IOS');
+			//alert('platform IOS');
 			pushNotification.register(
 				function(token){//SALVAR DEVICEID
 					var userid = JSON.parse(localStorage.getItem('userid'));
 					userid =userid.userid;
-					alert(userid);
-					alert(token);
+					//alert(userid);
+					//alert(token);
 					
 					$.ajax({
 							url: 'http://reifax.com/FollowupReifax/'+folder+'/mysetting_tabs/myfollowup_tabs/properties_followup.php',  
@@ -4327,6 +4327,10 @@ function pdf(){
 	}
 	html .ui-field-contain>label+.ui-flipswitch, html .ui-popup .ui-field-contain>label+.ui-flipswitch{
 		height:28px;
+	}
+	
+	.ui-header-fixed{
+		padding-top: 5px !important;
 	}
 </style>
 </head>
