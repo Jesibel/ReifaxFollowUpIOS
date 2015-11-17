@@ -170,8 +170,14 @@
 	}
 	
 	function  isIphone(){
-		var iOS7UserAgentStr = /(iPad|iPhone|iPod);/i;
-		return (navigator.userAgent.match(iOS7UserAgentStr));
+		//var iOS7UserAgentStr = /(iPad|iPhone|iPod)/i;		
+		//navigator.userAgent.match(/iPad|iPhone|Android|iPod/i);
+		//return (navigator.userAgent.match(iOS7UserAgentStr));
+		if ((navigator.userAgent.match(/iPad/i)) || (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))){
+			return true;
+		}else if (navigator.userAgent.match(/Android/i)){
+			return false;
+		}
 	}
 	
 	// handle APNS notifications for iOS
@@ -10960,9 +10966,9 @@ function pdf(){
 	}, false);
 		
 		
-	if(window.localStorage["userid"] != undefined) {
+	/*if(window.localStorage["userid"] != undefined) {
 		alert('device');	
-	}
+	}*/
 </script>
 </body>
   
